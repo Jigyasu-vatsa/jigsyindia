@@ -98,28 +98,28 @@ export const Navbar: React.FC<NavbarProps> = ({
                 targetWidth={144}
                 loading="eager"
                 alt="JIGSY Official Seal"
-                className="w-full h-full object-contain"
+                className="w-10 h-10 sm:w-14 sm:h-14 md:w-16 md:h-16 object-contain filter drop-shadow-[0_2px_8px_rgba(0,0,0,0.4)] group-hover:scale-105 transition-transform"
               />
             </div>
           </button>
 
-          <div className="text-center flex-1 px-2">
-            <div
-              className="text-xs sm:text-sm md:text-base lg:text-lg font-extrabold text-red-700 dark:text-amber-400 tracking-wide uppercase leading-snug"
-              style={{ fontFamily: 'Outfit, serif' }}
+      
+          {/* Center: Perfectly fitted, single-line corporate name & 3-second alternating subtitle */}
+          <div className="flex-1 text-center min-w-0 px-1 sm:px-2">
+            <h1
+              className={`font-serif font-black tracking-wide uppercase sm:whitespace-nowrap leading-tight text-[10.5px] sm:text-base md:text-lg lg:text-xl xl:text-2xl transition-colors duration-300 ${
+                isLight
+                  ? 'text-rose-700 drop-shadow-[0_1px_2px_rgba(255,255,255,0.8)]'
+                  : 'text-amber-400 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]'
+              }`}
             >
-              <button
-                type="button"
-                onClick={() => onNavigate('home')}
-                className="cursor-pointer hover:opacity-90 transition-opacity bg-transparent border-0 p-0 uppercase tracking-wide"
-              >
-                {COMPANY_DETAILS.name}
-              </button>
-            </div>
+              {COMPANY_DETAILS.name}
+            </h1>
+
+            {/* Alternating Tagline */}
             <div className="text-[11px] sm:text-xs font-semibold text-slate-600 dark:text-slate-300 min-h-[18px] transition-all duration-500 mt-0.5">
               <span className="italic font-serif">{taglineOptions[taglineIndex]}</span>
             </div>
-          </div>
 
           <div className="shrink-0 flex items-center">
             <CrispImage
@@ -128,7 +128,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               targetWidth={96}
               loading="eager"
               alt="Make in India"
-              className="h-10 sm:h-12 w-auto object-contain"
+              className="w-10 h-10 sm:w-14 sm:h-14 md:w-16 md:h-16 object-contain filter drop-shadow-[0_2px_8px_rgba(0,0,0,0.4)]"
             />
           </div>
         </div>
