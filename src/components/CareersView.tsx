@@ -22,7 +22,6 @@ import { dispatchFormSubmit } from '../utils/formSubmit';
 
 interface CareersViewProps {
   language: Language;
-  onNavigateToYouth?: () => void;
 }
 
 export const CareersView: React.FC<CareersViewProps> = ({ language }) => {

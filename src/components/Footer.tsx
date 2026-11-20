@@ -6,7 +6,6 @@ import {
   ChevronRight,
   Linkedin,
   Facebook,
-  ShieldCheck,
   ExternalLink,
 } from 'lucide-react';
 import { Language } from '../types';
@@ -18,7 +17,6 @@ interface FooterProps {
   onNavigate: (view: string, sectorSlug?: string) => void;
   onOpenLegal: (tab: 'privacy' | 'terms') => void;
   onOpenCookieNotice: () => void;
-  onOpenAdminLogin: () => void;
 }
 
 export const Footer: React.FC<FooterProps> = ({
@@ -26,7 +24,6 @@ export const Footer: React.FC<FooterProps> = ({
   onNavigate,
   onOpenLegal,
   onOpenCookieNotice,
-  onOpenAdminLogin,
 }) => {
   const copy = UI_COPY[language].footer;
   const currentYear = new Date().getFullYear();
@@ -303,17 +300,6 @@ export const Footer: React.FC<FooterProps> = ({
                 </a>
               </li>
             </ul>
-
-            <div className="pt-1">
-              <button
-                type="button"
-                onClick={onOpenAdminLogin}
-                className="px-3 py-1.5 rounded-lg border border-slate-700 hover:border-slate-500 text-slate-300 hover:text-white flex items-center gap-1.5 text-[11px] font-medium transition-colors cursor-pointer"
-              >
-                <ShieldCheck className="w-3.5 h-3.5 text-amber-400" />
-                <span>{copy.adminDesk}</span>
-              </button>
-            </div>
           </div>
         </div>
 

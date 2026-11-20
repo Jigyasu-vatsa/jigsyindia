@@ -120,6 +120,14 @@ export const LegalModals: React.FC<LegalModalsProps> = ({
                 </p>
               </header>
 
+              {language !== 'en' && (
+                <div className="p-4 rounded-xl bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-800/70 text-xs sm:text-sm text-blue-950 dark:text-blue-200">
+                  {language === 'hi'
+                    ? 'सारांश: JIGSY INDIA आपकी व्यक्तिगत जानकारी कभी नहीं बेचता। इस पोर्टल पर केवल भाषा, थीम और एंटी-DoS सुरक्षा सत्र की बुनियादी प्राथमिकताएं आपके ब्राउज़र में सहेजी जाती हैं। विधिक रूप से मान्य पूर्ण अंग्रेजी नीति नीचे प्रस्तुत है।'
+                    : 'सारांश: JIGSY INDIA अहाँक व्यक्तिगत जानकारी कहियो नहि बेचैत अछि। एहि पोर्टल पर केवल भाषा, थीम आ एंटी-DoS सुरक्षा सत्रक प्राथमिकता ब्राउज़र में सहेजल जाएत अछि। विधिक रूप सँ मान्य पूर्ण अंग्रेजी नीति नीचाँ देल गेल अछि।'}
+                </div>
+              )}
+
               <section className="space-y-2">
                 <h3 className="text-base font-bold text-slate-900 dark:text-white">1. Introduction and Scope</h3>
                 <p>
@@ -182,10 +190,13 @@ export const LegalModals: React.FC<LegalModalsProps> = ({
               </section>
 
               <section className="space-y-2">
-                <h3 className="text-base font-bold text-slate-900 dark:text-white">5. Cookies and Tracking Technologies</h3>
+                <h3 className="text-base font-bold text-slate-900 dark:text-white">5. Cookies, Browser Storage &amp; Security Gateway</h3>
                 <p>
-                  Our website uses essential browser storage solely to remember your theme mode, preferred language,
-                  and policy acknowledgment. We do not deploy intrusive third-party ad-tracking pixels on this portal.
+                  Our website uses strictly necessary browser storage (<code>localStorage</code> and{' '}
+                  <code>sessionStorage</code>) solely to remember your theme mode, preferred language, policy
+                  acknowledgment, welcome preference, and temporary Anti-DoS / Anti-Bot security verification session
+                  (valid for 30 minutes). We do not deploy intrusive third-party advertising or cross-site tracking
+                  pixels on this corporate portal.
                 </p>
                 <button
                   type="button"
@@ -196,7 +207,13 @@ export const LegalModals: React.FC<LegalModalsProps> = ({
                   className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-amber-50 dark:bg-amber-950/40 text-amber-900 dark:text-amber-300 border border-amber-300 dark:border-amber-700/70 hover:bg-amber-100 dark:hover:bg-amber-900/50 transition-colors cursor-pointer"
                 >
                   <Cookie className="w-3.5 h-3.5" />
-                  <span>View Cookie Policy Summary</span>
+                  <span>
+                    {language === 'hi'
+                      ? 'कुकी नीति का सारांश देखें'
+                      : language === 'mai'
+                        ? 'कुकी नीतिक सारांश देखू'
+                        : 'View Cookie Policy Summary'}
+                  </span>
                 </button>
               </section>
 
@@ -268,7 +285,13 @@ export const LegalModals: React.FC<LegalModalsProps> = ({
                   className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold transition-colors cursor-pointer"
                 >
                   <Mail className="w-3.5 h-3.5" />
-                  <span>Contact Data Protection Officer (@DPO)</span>
+                  <span>
+                    {language === 'hi'
+                      ? 'डेटा संरक्षण अधिकारी (@DPO) से संपर्क करें'
+                      : language === 'mai'
+                        ? 'डेटा संरक्षण अधिकारी (@DPO) सँ संपर्क करू'
+                        : 'Contact Data Protection Officer (@DPO)'}
+                  </span>
                 </button>
               </section>
             </article>
@@ -282,6 +305,14 @@ export const LegalModals: React.FC<LegalModalsProps> = ({
                   <strong>{COMPANY_DETAILS.name}</strong> · CIN: {COMPANY_DETAILS.cin} · Effective Date: October 3, 2025
                 </p>
               </header>
+
+              {language !== 'en' && (
+                <div className="p-4 rounded-xl bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-800/70 text-xs sm:text-sm text-blue-950 dark:text-blue-200">
+                  {language === 'hi'
+                    ? 'सारांश: यह कॉर्पोरेट नियम एवं शर्तें JIGYASU INTEGRATED GLOBAL SERVICES PRIVATE LIMITED (JIGSY INDIA) की वेबसाइट और व्यावसायिक सेवाओं पर लागू होती हैं। सभी व्यावसायिक अनुबंध लिखित प्रस्ताव/MoU द्वारा संचालित होते हैं और न्यायिक क्षेत्राधिकार दरभंगा, बिहार (भारत) है।'
+                    : 'सारांश: ई कॉर्पोरेट नियम आ शर्तें JIGYASU INTEGRATED GLOBAL SERVICES PRIVATE LIMITED (JIGSY INDIA) केर वेबसाइट आ व्यावसायिक सेवा पर लागू होइत अछि। सभ व्यावसायिक अनुबंध लिखित प्रस्ताव/MoU द्वारा संचालित होइत अछि आ न्यायिक क्षेत्राधिकार दरभंगा, बिहार (भारत) अछि।'}
+                </div>
+              )}
 
               <section className="space-y-2">
                 <h3 className="text-base font-bold text-slate-900 dark:text-white">1. Introduction &amp; Eligibility</h3>
@@ -428,7 +459,13 @@ export const LegalModals: React.FC<LegalModalsProps> = ({
                   className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold transition-colors cursor-pointer"
                 >
                   <Mail className="w-3.5 h-3.5" />
-                  <span>Open Corporate Contact Form</span>
+                  <span>
+                    {language === 'hi'
+                      ? 'कॉर्पोरेट संपर्क फ़ॉर्म खोलें'
+                      : language === 'mai'
+                        ? 'कॉर्पोरेट संपर्क फ़ॉर्म खोलू'
+                        : 'Open Corporate Contact Form'}
+                  </span>
                 </button>
               </section>
             </article>

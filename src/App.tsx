@@ -23,7 +23,12 @@ import {
 import { Language } from './types';
 import { COMPANY_DETAILS, SECTORS, DIRECTORS, FOUNDER_PORTRAITS } from './data/companyData';
 import { resolveRouteFromLocation, getPathForView, getRepoBasePath } from './utils/portalHelpers';
-import { SECURITY_GATE_CONFIG, shouldShowSecurityGate, isSearchEngineCrawler } from './utils/securityGate';
+import {
+  SECURITY_GATE_CONFIG,
+  WELCOME_MODAL_SESSION_KEY,
+  shouldShowSecurityGate,
+  shouldShowWelcomeModal,
+} from './utils/securityGate';
 import { applySeoMetadataToDocument, getSeoMetadataForView } from './utils/seoManager';
 import { UI_COPY } from './utils/uiCopy';
 import { CrispImage } from './components/CrispImage';
@@ -35,7 +40,6 @@ import { ContactRequestPrefill } from './components/ContactRequestForm';
 import { ContactRequestModal } from './components/ContactRequestModal';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
-import { YouthInternshipPortal } from './components/YouthInternshipPortal';
 import { SectorsView } from './components/SectorsView';
 import { CareersView } from './components/CareersView';
 import { AboutView } from './components/AboutView';
@@ -43,7 +47,6 @@ import { FounderView } from './components/FounderView';
 import { DirectorsView } from './components/DirectorsView';
 import { HowToEngageView } from './components/HowToEngageView';
 import { ContactPageView, FeedbackSection } from './components/ContactAndVerification';
-import { AdminDesk } from './components/AdminDesk';
 import { LegalModals } from './components/LegalModals';
 import { FirstVisitModal } from './components/FirstVisitModal';
 import { Footer } from './components/Footer';
@@ -195,15 +198,21 @@ export default function App() {
     }
   });
 
-  // First Visit Onboarding Modal State (skipped for crawlers or when Security Gate already ran)
+  // Welcome (Language & Theme) Modal State — opens right after Security Gate & before site visit
+  // (bypassed automatically for search engine crawlers and ?autostart=1)
   const [isFirstVisitModalOpen, setIsFirstVisitModalOpen] = useState<boolean>(() => {
     try {
-      const params = new URLSearchParams(window.location.search || '');
-      if (params.get('autostart') === '1') return false;
-      if (typeof navigator !== 'undefined' && isSearchEngineCrawler(navigator.userAgent)) return false;
-      const storedGate = sessionStorage.getItem(SECURITY_GATE_CONFIG.sessionStorageKey);
-      if (shouldShowSecurityGate(window.location.search || '', storedGate)) return false;
-      return !localStorage.getItem('jigsy_visited');
+      const search = typeof window !== 'undefined' ? window.location.search : '';
+      const storedGate =
+        typeof sessionStorage !== 'undefined'
+          ? sessionStorage.getItem(SECURITY_GATE_CONFIG.sessionStorageKey)
+          : null;
+      if (shouldShowSecurityGate(search, storedGate)) return false;
+      const welcomeSeen =
+        typeof sessionStorage !== 'undefined'
+          ? sessionStorage.getItem(WELCOME_MODAL_SESSION_KEY)
+          : null;
+      return shouldShowWelcomeModal(search, welcomeSeen);
     } catch {
       return false;
     }
@@ -219,6 +228,7 @@ export default function App() {
   const handleCloseFirstVisitModal = () => {
     setIsFirstVisitModalOpen(false);
     try {
+      sessionStorage.setItem(WELCOME_MODAL_SESSION_KEY, 'true');
       localStorage.setItem('jigsy_visited', 'true');
     } catch (e) {
       console.error(e);
@@ -227,12 +237,17 @@ export default function App() {
 
   const handleSecurityGateVerified = () => {
     setIsSecurityGateOpen(false);
-    setIsFirstVisitModalOpen(false);
+    try {
+      const search = typeof window !== 'undefined' ? window.location.search : '';
+      const welcomeSeen =
+        typeof sessionStorage !== 'undefined'
+          ? sessionStorage.getItem(WELCOME_MODAL_SESSION_KEY)
+          : null;
+      setIsFirstVisitModalOpen(shouldShowWelcomeModal(search, welcomeSeen));
+    } catch {
+      setIsFirstVisitModalOpen(true);
+    }
   };
-
-  // Admin Desk State
-  const [isAdminDeskOpen, setIsAdminDeskOpen] = useState(false);
-  const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(false);
 
   // Legal Modals State
   const [isLegalModalOpen, setIsLegalModalOpen] = useState(false);
@@ -327,8 +342,6 @@ export default function App() {
           onLanguageChange={handleLanguageChange}
           isDark={isDark}
           onToggleTheme={toggleTheme}
-          onOpenAdminLogin={() => setIsAdminDeskOpen(true)}
-          isAdminLoggedIn={isAdminLoggedIn}
         />
 
         {/* 2. Main Content Router Protected by ErrorBoundary */}
@@ -1015,21 +1028,8 @@ export default function App() {
               />
             )}
 
-            {/* JIGSY Youth Secondary Route (for direct /internships or internship.jigsy.in visits) */}
-            {currentView === 'youth-portal' && (
-              <YouthInternshipPortal
-                language={language}
-                onOpenLegalModal={handleOpenLegal}
-              />
-            )}
-
             {/* Careers & Talent Pool Desk ("No Current Openings Right Now") */}
-            {currentView === 'careers' && (
-              <CareersView
-                language={language}
-                onNavigateToYouth={() => handleNavigate('youth-portal')}
-              />
-            )}
+            {currentView === 'careers' && <CareersView language={language} />}
 
             {/* Dedicated /contact View (Contact Form Prominently at the TOP) */}
             {currentView === 'contact' && (
@@ -1068,7 +1068,6 @@ export default function App() {
           onOpenCookieNotice={() =>
             setStatusModalState({ isOpen: true, kind: 'cookie' })
           }
-          onOpenAdminLogin={() => setIsAdminDeskOpen(true)}
         />
       </div>
 
@@ -1088,14 +1087,6 @@ export default function App() {
         language={language}
         onClose={() => setStatusModalState((prev) => ({ ...prev, isOpen: false }))}
         onOpenContactModal={handleOpenContactModal}
-      />
-
-      {/* 6. Admin Management Desk Modal */}
-      <AdminDesk
-        isOpen={isAdminDeskOpen}
-        onClose={() => setIsAdminDeskOpen(false)}
-        isAdminLoggedIn={isAdminLoggedIn}
-        onAdminLoginStateChange={setIsAdminLoggedIn}
       />
 
       {/* 7. Corporate Legal Terms & Privacy Policy Modal */}

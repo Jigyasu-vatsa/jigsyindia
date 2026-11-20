@@ -1,24 +1,15 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import path from 'node:path';
 import { validateCaptcha, generateCaptcha } from './captcha';
-import { generateApplicationId, generateCertificateNumber, buildCertificateQrPayload } from './idGenerator';
 import {
-  buildStandalonePrintHtml,
-  replaceCssFunctionCalls,
-  stripGradientColorSpaceHints,
-} from './printHelper';
-import {
-  getGraduationYearOptions,
-  getDefaultTenureForTrack,
-  formatWhatsAppReceiptMessage,
   resolveRouteFromLocation,
   getPathForView,
   isInternshipSubdomain,
   resolveAssetUrl,
   getRepoBasePath,
-  verifyRegistryRecord,
 } from './portalHelpers';
-import { buildRazorpayCheckoutConfig, RAZORPAY_MERCHANT_NAME } from './razorpay';
 import { generateJigsyAssistantReply, sanitizeForSpeech } from './jigsyAssistantEngine';
 import { SECTORS } from '../data/companyData';
 import { UI_COPY } from './uiCopy';
@@ -26,7 +17,9 @@ import { buildFormSubmitPayload, FORMSUBMIT_ENDPOINT } from './formSubmit';
 import { buildCrispImageSource, OPTIMIZED_IMAGE_REGISTRY } from './imageAssets';
 import {
   SECURITY_GATE_CONFIG,
+  WELCOME_MODAL_SESSION_KEY,
   shouldShowSecurityGate,
+  shouldShowWelcomeModal,
   isSearchEngineCrawler,
   computeStage2Progress,
   computeStage3Remaining,
@@ -51,171 +44,35 @@ test('captcha validator performs case-insensitive comparison ignoring whitespace
   assert.equal(validateCaptcha('4K9M2', ''), false);
 });
 
-test('generateApplicationId generates timestamp-sequenced collision-proof tracking IDs', () => {
-  const d = new Date(2026, 10, 12, 14, 5, 30);
-  const id = generateApplicationId(d);
-  assert.ok(id.startsWith('JIGSY-YOUTH-20261112-140530-'));
-  assert.match(id, /^JIGSY-YOUTH-\d{8}-\d{6}-\d{3}$/);
-});
-
-test('generateCertificateNumber creates formatted certificate codes with initials', () => {
-  const certNo = generateCertificateNumber('Rohit Kumar Jha', 'JIGSY-YOUTH-20261112-140530-842', 2026);
-  assert.equal(certNo, 'JIGSY/CERT/2026/YOUTH-842-RKJ');
-});
-
-test('buildStandalonePrintHtml uses block layout for portrait, offer-letter flex sheet, and no duplicate autoPrint by default', () => {
-  const landscapeHtml = buildStandalonePrintHtml({
-    title: 'Test Certificate',
-    filename: 'cert.pdf',
-    contentHtml: '<div>Certificate Content</div>',
-    orientation: 'landscape',
-  });
-  assert.ok(landscapeHtml.includes('size: A4 landscape;'));
-  assert.ok(landscapeHtml.includes('max-width: 1100px;'));
-  assert.ok(landscapeHtml.includes('display: flex !important;'));
-  assert.ok(!landscapeHtml.includes('triggerOnce()'), 'Iframe print mode should not inject inline auto-print script');
-
-  const portraitHtml = buildStandalonePrintHtml({
-    title: 'Test Letter',
-    filename: 'letter.pdf',
-    contentHtml: '<div class="offer-letter-sheet">Letter Content</div>',
-    orientation: 'portrait',
-  });
-  assert.ok(portraitHtml.includes('size: A4 portrait;'));
-  assert.ok(portraitHtml.includes('max-width: 820px;'));
-  assert.ok(portraitHtml.includes('display: block !important;'));
-  assert.ok(portraitHtml.includes('.offer-letter-sheet'));
-  assert.ok(portraitHtml.includes('justify-content: space-between !important;'));
-
-  const popupHtml = buildStandalonePrintHtml({
-    title: 'Popup Fallback',
-    filename: 'popup.pdf',
-    contentHtml: '<div>Popup Content</div>',
-    autoPrint: true,
-  });
-  assert.ok(popupHtml.includes('triggerOnce()'), 'Fallback popup mode should include single-fire autoPrint script');
-});
-
-test('replaceCssFunctionCalls and stripGradientColorSpaceHints sanitize Tailwind v4 oklab/oklch/color-mix CSS', () => {
-  const rawCss =
-    'color: oklch(0.5 0.2 140); border-color: color-mix(in oklab, oklch(0.6 0.15 70) 70%, transparent); background-image: linear-gradient(to right in oklab, rgba(0,0,0,0) 0%, #d97706 50%);';
-  const noHints = stripGradientColorSpaceHints(rawCss);
-  assert.ok(!noHints.includes('to right in oklab'));
-  assert.ok(noHints.includes('color-mix(in oklab'));
-
-  const sanitized = replaceCssFunctionCalls(
-    noHints,
-    ['oklch', 'oklab', 'color-mix'],
-    () => '#d97706'
-  );
-  assert.ok(!sanitized.includes('oklch('));
-  assert.ok(!sanitized.includes('color-mix('));
-  assert.ok(!sanitized.includes('oklab'));
-  assert.equal(
-    sanitized,
-    'color: #d97706; border-color: #d97706; background-image: linear-gradient(to right, rgba(0,0,0,0) 0%, #d97706 50%);'
-  );
-});
-
-test('buildCertificateQrPayload encapsulates candidate, father, track, and portal data', () => {
-  const payload = buildCertificateQrPayload({
-    certNumber: 'JIGSY/CERT/2026/YOUTH-842-RKJ',
-    candidateName: 'Mr. Rohit Kumar Jha',
-    fatherName: 'Shri Rameshwar Jha',
-    trackTitle: 'Internship Training Certification',
-    issueDate: '12/11/2026',
-  });
-  assert.ok(payload.includes('JIGSY/CERT/2026/YOUTH-842-RKJ'));
-  assert.ok(payload.includes('Mr. Rohit Kumar Jha'));
-  assert.ok(payload.includes('Shri Rameshwar Jha'));
-  assert.ok(payload.includes('https://jigsy.in'));
-});
-
-test('getGraduationYearOptions spans previous year through next 4 years', () => {
-  const years = getGraduationYearOptions(new Date(2026, 5, 1));
-  assert.deepEqual(years, ['2025', '2026', '2027', '2028', '2029', '2030']);
-});
-
-test('getDefaultTenureForTrack returns institutional week/hour formats without ranges', () => {
-  assert.equal(getDefaultTenureForTrack('track-1-cert-30d'), '4 Weeks (30 Days / 120 Hours)');
-  assert.equal(getDefaultTenureForTrack('track-4-research-overview'), '2 Weeks (15 Days / 60 Hours)');
-});
-
-test('formatWhatsAppReceiptMessage includes all applicant and payment fields', () => {
-  const msg = formatWhatsAppReceiptMessage({
-    id: 'JIGSY-YOUTH-20261113-101010-111',
-    salutation: 'Dr.',
-    fullName: 'Komal Jha',
-    fatherName: 'Rajesh Jha',
-    email: 'komal@example.com',
-    phone: '9876543210',
-    college: 'LNMU Darbhanga',
-    degree: 'BBA',
-    branch: 'HR Management',
-    passingYear: '2027',
-    trackId: 'track-2-training-cert',
-    trackTitle: 'Internship Training Certification',
-    courseFee: 0,
-    miscFee: 1000,
-    totalAmount: 1000,
-    paymentMethod: 'razorpay',
-    razorpayPaymentId: 'pay_ABC123',
-    status: 'verified',
-    termsAccepted: true,
-    createdAt: '2026-11-13T04:40:00.000Z',
-  });
-  for (const expected of [
-    'JIGSY-YOUTH-20261113-101010-111',
-    'track-2-training-cert',
-    'Internship Training Certification',
-    'Dr. Komal Jha',
-    'Rajesh Jha',
-    'komal@example.com',
-    '9876543210',
-    'LNMU Darbhanga',
-    'BBA',
-    'HR Management',
-    '2027',
-    '1000',
-    'pay_ABC123',
-  ]) {
-    assert.ok(msg.includes(expected), `Expected message to contain ${expected}`);
-  }
-});
-
-test('resolveRouteFromLocation and getPathForView support /internships and internship.jigsy.in subdomain', () => {
+test('resolveRouteFromLocation routes /internships and youth aliases cleanly to JIGSY Youth sector detail', () => {
   assert.equal(isInternshipSubdomain('internship.jigsy.in'), true);
   assert.equal(isInternshipSubdomain('jigsy.in'), false);
-  assert.deepEqual(resolveRouteFromLocation('/', '', '', 'internship.jigsy.in'), { view: 'youth-portal' });
+  assert.deepEqual(resolveRouteFromLocation('/', '', '', 'internship.jigsy.in'), {
+    view: 'sector-detail',
+    sectorSlug: 'youth',
+  });
   assert.deepEqual(resolveRouteFromLocation('/home', '', '', 'internship.jigsy.in'), { view: 'home' });
-  assert.equal(getPathForView('youth-portal', undefined, 'internship.jigsy.in'), '/');
   assert.equal(getPathForView('home', undefined, 'internship.jigsy.in'), '/home');
 
-  assert.deepEqual(resolveRouteFromLocation('/internships', '', ''), { view: 'youth-portal' });
-  assert.deepEqual(resolveRouteFromLocation('/', '#/internships', ''), { view: 'youth-portal' });
-  assert.deepEqual(resolveRouteFromLocation('/', '', '?route=/internships'), { view: 'youth-portal' });
-  assert.deepEqual(resolveRouteFromLocation('/', '', '?page=youth'), { view: 'youth-portal' });
+  assert.deepEqual(resolveRouteFromLocation('/internships', '', ''), {
+    view: 'sector-detail',
+    sectorSlug: 'youth',
+  });
+  assert.deepEqual(resolveRouteFromLocation('/', '#/internships', ''), {
+    view: 'sector-detail',
+    sectorSlug: 'youth',
+  });
+  assert.deepEqual(resolveRouteFromLocation('/', '', '?route=/internships'), {
+    view: 'sector-detail',
+    sectorSlug: 'youth',
+  });
+  assert.deepEqual(resolveRouteFromLocation('/', '', '?page=youth'), {
+    view: 'sector-detail',
+    sectorSlug: 'youth',
+  });
   assert.deepEqual(resolveRouteFromLocation('/sectors/rd', '', ''), { view: 'sector-detail', sectorSlug: 'rd' });
   assert.deepEqual(resolveRouteFromLocation('/', '', ''), { view: 'home' });
-  assert.equal(getPathForView('youth-portal'), '/internships');
-});
-
-test('buildRazorpayCheckoutConfig configures company name, amount in paise, and logo image', () => {
-  const cfg = buildRazorpayCheckoutConfig({
-    amountInINR: 1000,
-    trackTitle: 'Internship Training Certification',
-    applicantName: '  Komal Jha ',
-    applicantEmail: ' komal@example.com ',
-    applicantPhone: ' 9876543210 ',
-    logoImageUrl: 'data:image/png;base64,abc',
-  });
-  assert.equal(cfg.name, RAZORPAY_MERCHANT_NAME);
-  assert.equal(cfg.amount, 100000);
-  assert.equal(cfg.currency, 'INR');
-  assert.equal(cfg.image, 'data:image/png;base64,abc');
-  assert.equal(cfg.prefill.name, 'Komal Jha');
-  assert.equal(cfg.prefill.email, 'komal@example.com');
-  assert.equal(cfg.prefill.contact, '+919876543210');
+  assert.equal(getPathForView('sector-detail', 'youth'), '/sectors/youth');
 });
 
 test('resolveAssetUrl handles root custom domain and GitHub Pages repository subpaths', () => {
@@ -234,73 +91,10 @@ test('getRepoBasePath and routing support GitHub Pages project URLs (*.github.io
   );
   assert.deepEqual(
     resolveRouteFromLocation('/jigsy-website/', '', '?route=/internships', 'jigsy-india.github.io', '/'),
-    { view: 'youth-portal' }
+    { view: 'sector-detail', sectorSlug: 'youth' }
   );
   assert.equal(getPathForView('sector-detail', 'edutech', 'jigsy-india.github.io', '/jigsy-website'), '/jigsy-website/sectors/edutech');
   assert.equal(getPathForView('home', undefined, 'jigsy-india.github.io', '/jigsy-website'), '/jigsy-website/');
-});
-
-test('verifyRegistryRecord resolves employees, certificates, and youth applications case-insensitively', () => {
-  const employees = [
-    {
-      employeeId: 'JIGSY-EMP-002',
-      fullName: 'Jigyasu Vatsa',
-      designation: 'Founder & Chief Technology Architect',
-      department: 'Engineering & R&D',
-      joiningDate: '2025-01-10',
-      status: 'Active' as const,
-      officialEmail: 'jigyasu.vatsa@gmail.com',
-    },
-  ];
-  const applications = [
-    {
-      id: 'JIGSY-YOUTH-20261113-101010-111',
-      salutation: 'Ms.',
-      fullName: 'Komal Jha',
-      fatherName: 'Rajesh Jha',
-      email: 'komal@example.com',
-      phone: '9876543210',
-      college: 'LNMU Darbhanga',
-      degree: 'BBA',
-      branch: 'HR',
-      passingYear: '2027',
-      trackId: 'track-2-training-cert',
-      trackTitle: 'Internship Training Certification',
-      courseFee: 0,
-      miscFee: 1000,
-      totalAmount: 1000,
-      paymentMethod: 'razorpay' as const,
-      status: 'verified' as const,
-      termsAccepted: true,
-      createdAt: '2026-11-13T04:40:00.000Z',
-    },
-  ];
-  const certificates = [
-    {
-      certificateNumber: 'JIGSY/CERT/2026/YOUTH-111-KJ',
-      applicationId: 'JIGSY-YOUTH-20261113-101010-111',
-      candidateName: 'Komal Jha',
-      salutation: 'Ms.',
-      college: 'LNMU Darbhanga',
-      trackTitle: 'Internship Training Certification',
-      issueDate: '19/11/2026',
-      grade: 'Grade A+',
-    },
-  ];
-
-  const empMatch = verifyRegistryRecord(' jigsy-emp-002 ', employees, applications, certificates);
-  assert.equal(empMatch?.kind, 'employee');
-  assert.equal(empMatch?.fullName, 'Jigyasu Vatsa');
-
-  const certMatch = verifyRegistryRecord('jigsy/cert/2026/youth-111-kj', employees, applications, certificates);
-  assert.equal(certMatch?.kind, 'certificate');
-  assert.equal(certMatch?.fullName, 'Ms. Komal Jha');
-
-  const appMatch = verifyRegistryRecord('JIGSY-YOUTH-20261113-101010-111', employees, applications, certificates);
-  assert.equal(appMatch?.kind, 'application');
-  assert.equal(appMatch?.status, 'Verified Enrollee');
-
-  assert.equal(verifyRegistryRecord('UNKNOWN-ID', employees, applications, certificates), null);
 });
 
 test('resolveRouteFromLocation and getPathForView support separate About, Founder, Directors, and Engage routes', () => {
@@ -537,6 +331,18 @@ test('Security Gate enforces exact 15s total staged timeline, session persistenc
   assert.equal(isHoneypotTriggered('http://spam-bot.example'), true);
 });
 
+test('Welcome Modal (Language & Theme popup) triggers after Security Gate for visitors while bypassing crawlers & autostart', () => {
+  const chromeUa = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/128.0.0.0 Safari/537.36';
+  const googlebotUa = 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)';
+
+  assert.ok(WELCOME_MODAL_SESSION_KEY.length > 0);
+  assert.equal(shouldShowWelcomeModal('', null, chromeUa), true);
+  assert.equal(shouldShowWelcomeModal('?security_gate=1', null, chromeUa), true);
+  assert.equal(shouldShowWelcomeModal('', 'true', chromeUa), false);
+  assert.equal(shouldShowWelcomeModal('?autostart=1', null, chromeUa), false);
+  assert.equal(shouldShowWelcomeModal('', null, googlebotUa), false);
+});
+
 test('Search engine and social crawlers bypass 15s Security Gate immediately for uninterrupted SEO indexing', () => {
   const crawlers = [
     'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)',
@@ -599,4 +405,18 @@ test('SEO manager covers every JIGSY / JIGS / JIGYASU legal brand variant and ge
   assert.equal(notFoundMeta.robots, 'noindex, follow');
 });
 
+test('All active corporate images, Lanczos variants, and SEO/GitHub Pages files exist cleanly on disk', () => {
+  const publicRoot = path.resolve(process.cwd(), 'public');
+  for (const seoFile of ['.nojekyll', '404.html', 'robots.txt', 'sitemap.xml', 'site.webmanifest']) {
+    assert.ok(fs.existsSync(path.join(publicRoot, seoFile)), `Missing SEO/hosting file: public/${seoFile}`);
+  }
 
+  for (const [key, entry] of Object.entries(OPTIMIZED_IMAGE_REGISTRY)) {
+    const origFile = path.join(publicRoot, entry.originalPath.replace(/^\/+/, ''));
+    assert.ok(fs.existsSync(origFile), `Missing active image for ${key}: ${origFile}`);
+    for (const variant of entry.variants) {
+      const varFile = path.join(publicRoot, variant.path.replace(/^\/+/, ''));
+      assert.ok(fs.existsSync(varFile), `Missing Lanczos variant for ${key}: ${varFile}`);
+    }
+  }
+});

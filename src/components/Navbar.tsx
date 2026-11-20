@@ -28,8 +28,6 @@ interface NavbarProps {
   onLanguageChange: (lang: Language) => void;
   isDark: boolean;
   onToggleTheme: () => void;
-  onOpenAdminLogin: () => void;
-  isAdminLoggedIn: boolean;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -40,7 +38,6 @@ export const Navbar: React.FC<NavbarProps> = ({
   onLanguageChange,
   isDark,
   onToggleTheme,
-  onOpenAdminLogin,
 }) => {
   const nav = UI_COPY[language].nav;
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -547,16 +544,6 @@ export const Navbar: React.FC<NavbarProps> = ({
             <span>JIGSY Youth (youth.jigsy.in)</span>
             <ExternalLink className="w-4 h-4" />
           </a>
-          <button
-            type="button"
-            onClick={() => {
-              onOpenAdminLogin();
-              setIsMobileMenuOpen(false);
-            }}
-            className="w-full text-left px-3 py-2 rounded-lg bg-slate-800 text-slate-300 font-semibold cursor-pointer"
-          >
-            {nav.adminDesk}
-          </button>
         </div>
       )}
     </header>

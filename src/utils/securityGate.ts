@@ -50,6 +50,38 @@ export function isSearchEngineCrawler(userAgent: string = ''): boolean {
   return VERIFIED_SEARCH_CRAWLER_PATTERN.test(userAgent || '');
 }
 
+export const WELCOME_MODAL_SESSION_KEY = 'jigsy_welcome_seen_v1';
+
+/**
+ * Determines whether the Welcome (Language & Theme) popup should appear
+ * immediately after Security Gate verification and before browsing the site.
+ * - Always bypassed for `?autostart=1` and verified search engine / social crawlers.
+ * - Shown once per browser session until dismissed by the visitor.
+ */
+export function shouldShowWelcomeModal(
+  search: string = '',
+  welcomeSeenRaw: string | null = null,
+  userAgent?: string
+): boolean {
+  const params = new URLSearchParams(search || '');
+  if (params.get('autostart') === '1') {
+    return false;
+  }
+  const effectiveUa =
+    userAgent !== undefined
+      ? userAgent
+      : typeof navigator !== 'undefined'
+        ? navigator.userAgent || ''
+        : '';
+  if (isSearchEngineCrawler(effectiveUa)) {
+    return false;
+  }
+  if (welcomeSeenRaw && welcomeSeenRaw.trim().length > 0) {
+    return false;
+  }
+  return true;
+}
+
 /**
  * Determines whether the pre-load Anti-DoS / Anti-Bot Security Gate should display.
  * - `?security_gate=1` always forces the gate open (useful for inspection & verification).

@@ -276,7 +276,6 @@ export const SecurityGate: React.FC<SecurityGateProps> = ({
     setStage(4);
     try {
       sessionStorage.setItem(SECURITY_GATE_CONFIG.sessionStorageKey, String(Date.now()));
-      localStorage.setItem('jigsy_visited', 'true');
     } catch {
       // Ignore storage quota errors in restricted sandboxes
     }
@@ -468,169 +467,195 @@ export const SecurityGate: React.FC<SecurityGateProps> = ({
       </header>
 
       {/* Main Staged Anti-DoS / Anti-Bot Verification Workspace */}
-      <main className="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6 py-7 sm:py-10 space-y-7 text-center">
-        {/* Stepper Indicator */}
-        <div className="inline-flex items-center gap-2 sm:gap-3 px-4 py-1.5 rounded-full bg-white/95 dark:bg-slate-900/95 border border-slate-200 dark:border-slate-800 shadow-sm text-[11px] font-bold">
-          <span
-            className={`px-2 py-0.5 rounded-full ${
-              stage === 0
-                ? 'bg-blue-600 text-white'
-                : 'bg-emerald-100 dark:bg-emerald-950/70 text-emerald-700 dark:text-emerald-300'
-            }`}
-          >
-            {copy.step0Lbl}
-          </span>
-          <span className="text-slate-300 dark:text-slate-600">→</span>
-          <span
-            className={`px-2 py-0.5 rounded-full ${
-              stage === 2
-                ? humanVerified
-                  ? 'bg-emerald-600 text-white'
-                  : 'bg-cyan-600 text-white'
-                : stage >= 3
-                  ? 'bg-emerald-100 dark:bg-emerald-950/70 text-emerald-700 dark:text-emerald-300'
-                  : 'text-slate-400 dark:text-slate-500'
-            }`}
-          >
-            {copy.step2Lbl}
-          </span>
-          <span className="text-slate-300 dark:text-slate-600">→</span>
-          <span
-            className={`px-2 py-0.5 rounded-full ${
-              stage === 3
-                ? 'bg-amber-500 text-slate-950'
-                : stage === 4
-                  ? 'bg-emerald-600 text-white'
-                  : 'text-slate-400 dark:text-slate-500'
-            }`}
-          >
-            {copy.step3Lbl}
-          </span>
-        </div>
+      <main
+        className={`flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6 text-center ${
+          stage === 2 ? 'py-3.5 sm:py-5 space-y-3.5' : 'py-6 sm:py-9 space-y-6'
+        }`}
+      >
+        {/* Stepper Indicator & Gateway Pill */}
+        <div className="flex flex-wrap items-center justify-center gap-2">
+          <div className="inline-flex items-center gap-2 sm:gap-2.5 px-3.5 py-1 rounded-full bg-white/95 dark:bg-slate-900/95 border border-slate-200 dark:border-slate-800 shadow-sm text-[11px] font-bold">
+            <span
+              className={`px-2 py-0.5 rounded-full ${
+                stage === 0
+                  ? 'bg-blue-600 text-white'
+                  : 'bg-emerald-100 dark:bg-emerald-950/70 text-emerald-700 dark:text-emerald-300'
+              }`}
+            >
+              {copy.step0Lbl}
+            </span>
+            <span className="text-slate-300 dark:text-slate-600">→</span>
+            <span
+              className={`px-2 py-0.5 rounded-full ${
+                stage === 2
+                  ? humanVerified
+                    ? 'bg-emerald-600 text-white'
+                    : 'bg-cyan-600 text-white'
+                  : stage >= 3
+                    ? 'bg-emerald-100 dark:bg-emerald-950/70 text-emerald-700 dark:text-emerald-300'
+                    : 'text-slate-400 dark:text-slate-500'
+              }`}
+            >
+              {copy.step2Lbl}
+            </span>
+            <span className="text-slate-300 dark:text-slate-600">→</span>
+            <span
+              className={`px-2 py-0.5 rounded-full ${
+                stage === 3
+                  ? 'bg-amber-500 text-slate-950'
+                  : stage === 4
+                    ? 'bg-emerald-600 text-white'
+                    : 'text-slate-400 dark:text-slate-500'
+              }`}
+            >
+              {copy.step3Lbl}
+            </span>
+          </div>
 
-        {/* Stage Heading */}
-        <div className="space-y-2">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-100 dark:bg-blue-950/70 text-blue-800 dark:text-blue-300 text-xs font-bold border border-blue-200 dark:border-blue-800/70">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-100 dark:bg-blue-950/70 text-blue-800 dark:text-blue-300 text-[11px] font-bold border border-blue-200 dark:border-blue-800/70">
             <ShieldCheck className="w-3.5 h-3.5" />
             <span>{copy.shieldBadge}</span>
           </div>
-
-          <h1
-            data-testid="security-gate-heading"
-            className={`text-2xl sm:text-3xl md:text-4xl font-black brand-font transition-opacity duration-500 ${
-              stage === 0
-                ? 'text-blue-700 dark:text-blue-400'
-                : stage === 2
-                  ? 'text-cyan-700 dark:text-cyan-400'
-                  : stage === 3
-                    ? 'text-amber-600 dark:text-amber-400'
-                    : 'text-emerald-600 dark:text-emerald-400'
-            }`}
-          >
-            {stage === 0
-              ? copy.stage0Heading
-              : stage === 2
-                ? copy.stage2Heading
-                : stage === 3
-                  ? copy.stage3Heading
-                  : copy.stage4Heading}
-          </h1>
         </div>
 
-        {/* Central Animated Ring / Shield Indicator (Preserves Stage 0, Stage 2, Stage 3, Stage 4 Visuals) */}
-        <div className="relative flex flex-col items-center justify-center py-2">
-          {(stage === 0 || stage === 3) && (
-            <div className="relative flex items-center justify-center">
-              <div className="absolute -inset-6 rounded-full jigsy-futuristic-pulse pointer-events-none" />
-              <div
-                data-testid="security-gate-spinner"
-                className={`jigsy-countdown-circle relative z-10 ${
-                  stage === 0
-                    ? 'text-blue-600 dark:text-cyan-400'
-                    : 'text-amber-500 dark:text-amber-400'
-                }`}
-              >
-                <div className="jigsy-countdown-upright flex items-center justify-center">
-                  {stage === 0 ? (
-                    <Zap className="w-11 h-11" />
-                  ) : (
-                    <span
-                      data-testid="security-gate-countdown"
-                      className="text-4xl font-black font-mono text-slate-900 dark:text-white"
-                    >
-                      {stage3Remaining}
-                    </span>
-                  )}
-                </div>
+        {/* Stage Heading (Compact inline shield layout on Stage 2 so Services Preview sits cleanly higher) */}
+        <div className={stage === 2 ? 'space-y-1' : 'space-y-2'}>
+          <div className="flex items-center justify-center gap-3">
+            {stage === 2 && (
+              <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-cyan-50 dark:bg-cyan-950/60 border-2 border-cyan-400/80 flex items-center justify-center shadow-md shrink-0">
+                {humanVerified ? (
+                  <CheckCircle2 className="w-6 h-6 text-emerald-500" />
+                ) : (
+                  <ShieldAlert className="w-6 h-6 text-cyan-600 dark:text-cyan-400" />
+                )}
               </div>
-            </div>
-          )}
-
-          {stage === 2 && (
-            <div className="w-16 h-16 rounded-2xl bg-cyan-50 dark:bg-cyan-950/60 border-2 border-cyan-400/80 flex items-center justify-center shadow-lg">
-              {humanVerified ? (
-                <CheckCircle2 className="w-9 h-9 text-emerald-500" />
-              ) : (
-                <ShieldAlert className="w-9 h-9 text-cyan-600 dark:text-cyan-400" />
-              )}
-            </div>
-          )}
-
-          {stage === 4 && (
-            <div className="w-16 h-16 rounded-2xl bg-emerald-50 dark:bg-emerald-950/60 border-2 border-emerald-500 flex items-center justify-center shadow-lg">
-              <CheckCircle2 className="w-9 h-9 text-emerald-600 dark:text-emerald-400" />
-            </div>
-          )}
-
-          {/* Timer Note (Visible in Stage 3 & Stage 4, matching original flow) */}
-          <p
-            className={`mt-4 text-xs sm:text-sm text-slate-600 dark:text-slate-300 transition-opacity duration-500 ${
-              stage >= 3 ? 'opacity-100' : 'opacity-60'
-            }`}
-          >
-            {copy.timerPrefix}{' '}
-            <span
-              data-testid="security-gate-time-left"
-              className={`font-extrabold ${
-                stage === 3
-                  ? 'text-red-600 dark:text-amber-400'
-                  : stage === 4
-                    ? 'text-emerald-600 dark:text-emerald-400'
-                    : 'text-blue-700 dark:text-cyan-400'
+            )}
+            <h1
+              data-testid="security-gate-heading"
+              className={`${
+                stage === 2
+                  ? 'text-xl sm:text-2xl md:text-3xl'
+                  : 'text-2xl sm:text-3xl md:text-4xl'
+              } font-black brand-font transition-opacity duration-500 ${
+                stage === 0
+                  ? 'text-blue-700 dark:text-blue-400'
+                  : stage === 2
+                    ? 'text-cyan-700 dark:text-cyan-400'
+                    : stage === 3
+                      ? 'text-amber-600 dark:text-amber-400'
+                      : 'text-emerald-600 dark:text-emerald-400'
               }`}
             >
-              {stage === 3 ? copy.inSeconds(stage3Remaining) : copy.shortly}
-            </span>
-            .
-          </p>
+              {stage === 0
+                ? copy.stage0Heading
+                : stage === 2
+                  ? copy.stage2Heading
+                  : stage === 3
+                    ? copy.stage3Heading
+                    : copy.stage4Heading}
+            </h1>
+          </div>
+
+          {stage === 2 && (
+            <p className="text-xs text-slate-600 dark:text-slate-300 opacity-85">
+              {copy.timerPrefix}{' '}
+              <span
+                data-testid="security-gate-time-left"
+                className="font-extrabold text-blue-700 dark:text-cyan-400"
+              >
+                {copy.shortly}
+              </span>
+              .
+            </p>
+          )}
         </div>
 
-        {/* Stage 2 Top Prompt Card (Above Services Preview — Exact Stage 2 Layout) */}
+        {/* Central Animated Ring / Shield Indicator (Stages 0, 3, and 4) */}
+        {stage !== 2 && (
+          <div className="relative flex flex-col items-center justify-center py-1.5">
+            {(stage === 0 || stage === 3) && (
+              <div className="relative flex items-center justify-center">
+                <div className="absolute -inset-6 rounded-full jigsy-futuristic-pulse pointer-events-none" />
+                <div
+                  data-testid="security-gate-spinner"
+                  className={`jigsy-countdown-circle relative z-10 ${
+                    stage === 0
+                      ? 'text-blue-600 dark:text-cyan-400'
+                      : 'text-amber-500 dark:text-amber-400'
+                  }`}
+                >
+                  <div className="jigsy-countdown-upright flex items-center justify-center">
+                    {stage === 0 ? (
+                      <Zap className="w-11 h-11" />
+                    ) : (
+                      <span
+                        data-testid="security-gate-countdown"
+                        className="text-4xl font-black font-mono text-slate-900 dark:text-white"
+                      >
+                        {stage3Remaining}
+                      </span>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {stage === 4 && (
+              <div className="w-16 h-16 rounded-2xl bg-emerald-50 dark:bg-emerald-950/60 border-2 border-emerald-500 flex items-center justify-center shadow-lg">
+                <CheckCircle2 className="w-9 h-9 text-emerald-600 dark:text-emerald-400" />
+              </div>
+            )}
+
+            {/* Timer Note */}
+            <p
+              className={`mt-4 text-xs sm:text-sm text-slate-600 dark:text-slate-300 transition-opacity duration-500 ${
+                stage >= 3 ? 'opacity-100' : 'opacity-65'
+              }`}
+            >
+              {copy.timerPrefix}{' '}
+              <span
+                data-testid="security-gate-time-left"
+                className={`font-extrabold ${
+                  stage === 3
+                    ? 'text-red-600 dark:text-amber-400'
+                    : stage === 4
+                      ? 'text-emerald-600 dark:text-emerald-400'
+                      : 'text-blue-700 dark:text-cyan-400'
+                }`}
+              >
+                {stage === 3 ? copy.inSeconds(stage3Remaining) : copy.shortly}
+              </span>
+              .
+            </p>
+          </div>
+        )}
+
+        {/* Stage 2 Compact Anti-Bot Security Check Strip (Elevated above Services Preview) */}
         {stage === 2 && (
-          <div className="max-w-xl mx-auto animate-fadeIn">
+          <div className="max-w-3xl mx-auto animate-fadeIn">
             <div
               data-testid="security-gate-top-card"
-              className={`rounded-2xl p-4 sm:p-5 border shadow-md transition-all ${
+              className={`rounded-xl px-4 py-2.5 border shadow-sm transition-all flex flex-col sm:flex-row items-center justify-center gap-1.5 sm:gap-3 ${
                 humanVerified
                   ? 'bg-emerald-50 dark:bg-emerald-950/40 border-emerald-400 dark:border-emerald-700'
                   : 'bg-white/95 dark:bg-slate-900/95 border-cyan-400/70 dark:border-cyan-700/80'
               }`}
             >
               <div
-                className={`text-base sm:text-lg font-extrabold brand-font flex items-center justify-center gap-2 ${
+                className={`text-sm font-extrabold brand-font flex items-center gap-1.5 shrink-0 ${
                   humanVerified
                     ? 'text-emerald-700 dark:text-emerald-300'
                     : 'text-cyan-700 dark:text-cyan-300'
                 }`}
               >
                 {humanVerified ? (
-                  <CheckCircle2 className="w-5 h-5" />
+                  <CheckCircle2 className="w-4 h-4" />
                 ) : (
-                  <Bot className="w-5 h-5" />
+                  <Bot className="w-4 h-4" />
                 )}
-                <span>{humanVerified ? copy.verifiedTitle : copy.antiBotTitle}</span>
+                <span>{humanVerified ? copy.verifiedTitle : copy.antiBotTitle}:</span>
               </div>
-              <p className="mt-1.5 text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+              <p className="text-xs text-slate-600 dark:text-slate-300 leading-snug text-center sm:text-left">
                 {humanVerified ? copy.verifiedDesc : copy.antiBotDesc}
               </p>
             </div>
@@ -640,7 +665,9 @@ export const SecurityGate: React.FC<SecurityGateProps> = ({
         {/* Services Preview Section with Active Laser Scanner Overlay */}
         <section
           data-testid="security-gate-services-panel"
-          className={`rounded-2xl p-5 sm:p-6 bg-white/90 dark:bg-slate-900/90 shadow-md jigsy-scanning-container ${
+          className={`rounded-2xl ${
+            stage === 2 ? 'p-4 sm:p-5' : 'p-5 sm:p-6'
+          } bg-white/90 dark:bg-slate-900/90 shadow-md jigsy-scanning-container ${
             isServicesVerified ? 'verified' : ''
           } ${isServicesActive ? 'opacity-100' : 'opacity-20 pointer-events-none select-none'}`}
         >
@@ -650,7 +677,7 @@ export const SecurityGate: React.FC<SecurityGateProps> = ({
             className={`jigsy-scanner-line ${isScannerActive ? 'active-scan' : ''}`}
           />
 
-          <div className="flex items-center justify-between gap-2 mb-4">
+          <div className="flex items-center justify-between gap-2 mb-3">
             <h2 className="text-left text-base sm:text-lg font-black brand-font text-slate-900 dark:text-white">
               {copy.servicesHeading}
             </h2>
@@ -667,13 +694,13 @@ export const SecurityGate: React.FC<SecurityGateProps> = ({
             </span>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-left">
-            <div className="rounded-xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/80 p-4 flex flex-col justify-between space-y-3">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5 text-left">
+            <div className="rounded-xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/80 p-3.5 flex flex-col justify-between space-y-2.5">
               <div>
                 <div className="text-sm font-extrabold brand-font text-slate-900 dark:text-white">
                   {COMPANY_DETAILS.shortName}
                 </div>
-                <p className="text-xs text-slate-600 dark:text-slate-300 mt-1.5 leading-relaxed">
+                <p className="text-xs text-slate-600 dark:text-slate-300 mt-1 leading-relaxed">
                   {copy.card1Desc}
                 </p>
               </div>
@@ -683,12 +710,12 @@ export const SecurityGate: React.FC<SecurityGateProps> = ({
               </div>
             </div>
 
-            <div className="rounded-xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/80 p-4 flex flex-col justify-between space-y-3">
+            <div className="rounded-xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/80 p-3.5 flex flex-col justify-between space-y-2.5">
               <div>
                 <div className="text-sm font-extrabold brand-font text-slate-900 dark:text-white">
                   {copy.card2Title}
                 </div>
-                <p className="text-xs text-slate-600 dark:text-slate-300 mt-1.5 leading-relaxed">
+                <p className="text-xs text-slate-600 dark:text-slate-300 mt-1 leading-relaxed">
                   {copy.card2Desc}
                 </p>
               </div>
@@ -703,12 +730,12 @@ export const SecurityGate: React.FC<SecurityGateProps> = ({
               </a>
             </div>
 
-            <div className="rounded-xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/80 p-4 flex flex-col justify-between space-y-3">
+            <div className="rounded-xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/80 p-3.5 flex flex-col justify-between space-y-2.5">
               <div>
                 <div className="text-sm font-extrabold brand-font text-slate-900 dark:text-white">
                   {copy.card3Title}
                 </div>
-                <p className="text-xs text-slate-600 dark:text-slate-300 mt-1.5 leading-relaxed">
+                <p className="text-xs text-slate-600 dark:text-slate-300 mt-1 leading-relaxed">
                   {copy.card3Desc}
                 </p>
               </div>
@@ -718,22 +745,17 @@ export const SecurityGate: React.FC<SecurityGateProps> = ({
             </div>
           </div>
 
-          {/* Stage 2 Bottom Verification Panel (Inside/Below Services — Exact Stage 2 Layout) */}
+          {/* Stage 2 Bottom Verification Panel (Compact so Complete Verification stays clearly visible above fold) */}
           {stage === 2 && (
-            <div className="mt-6 max-w-xl mx-auto animate-fadeIn">
+            <div className="mt-4 max-w-2xl mx-auto animate-fadeIn">
               <div
                 data-testid="security-gate-verification-panel"
-                className={`rounded-2xl p-5 border shadow-lg transition-all ${
+                className={`rounded-xl p-4 border shadow-md transition-all ${
                   humanVerified
                     ? 'bg-emerald-50 dark:bg-emerald-950/40 border-emerald-400 dark:border-emerald-700'
                     : 'bg-white dark:bg-slate-900 border-cyan-400/80 dark:border-cyan-700'
                 }`}
               >
-                <div className="text-base font-extrabold brand-font text-cyan-700 dark:text-cyan-300 flex items-center justify-center gap-2">
-                  <MousePointerClick className="w-5 h-5" />
-                  <span>{copy.panelTitle}</span>
-                </div>
-
                 {/* Invisible Anti-Bot Honeypot Input */}
                 <input
                   type="text"
@@ -746,13 +768,18 @@ export const SecurityGate: React.FC<SecurityGateProps> = ({
                   className="sr-only"
                 />
 
-                <div className="mt-4">
+                <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
+                  <div className="text-sm sm:text-base font-extrabold brand-font text-cyan-700 dark:text-cyan-300 flex items-center gap-2">
+                    <MousePointerClick className="w-4 h-4 shrink-0" />
+                    <span>{copy.panelTitle}</span>
+                  </div>
+
                   <button
                     type="button"
                     data-testid="security-gate-verify-btn"
                     disabled={humanVerified}
                     onClick={handleCompleteVerificationClick}
-                    className={`px-6 py-3 rounded-xl font-extrabold text-sm shadow-md transition-all inline-flex items-center justify-center gap-2 cursor-pointer ${
+                    className={`px-5 py-2.5 rounded-xl font-extrabold text-xs sm:text-sm shadow-md transition-all inline-flex items-center justify-center gap-2 cursor-pointer shrink-0 ${
                       humanVerified
                         ? 'bg-emerald-600 text-white cursor-default'
                         : 'bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white hover:shadow-lg'
@@ -779,7 +806,7 @@ export const SecurityGate: React.FC<SecurityGateProps> = ({
                 )}
 
                 {/* Animated Progress Bar */}
-                <div className="mt-4 text-left space-y-1.5">
+                <div className="mt-3 text-left space-y-1">
                   <div className="flex items-center justify-between text-xs font-semibold text-slate-600 dark:text-slate-300">
                     <span>{copy.statusLabel}</span>
                     <span className="font-mono">
@@ -790,7 +817,7 @@ export const SecurityGate: React.FC<SecurityGateProps> = ({
                           : copy.awaitingLabel}
                     </span>
                   </div>
-                  <div className="relative w-full h-7 rounded-lg bg-slate-200 dark:bg-slate-800 overflow-hidden border border-slate-300 dark:border-slate-700">
+                  <div className="relative w-full h-6 rounded-lg bg-slate-200 dark:bg-slate-800 overflow-hidden border border-slate-300 dark:border-slate-700">
                     <div
                       data-testid="security-gate-progress"
                       role="progressbar"
@@ -823,7 +850,7 @@ export const SecurityGate: React.FC<SecurityGateProps> = ({
         </section>
 
         {/* Stage Explanation Copy */}
-        <div className="max-w-2xl mx-auto space-y-2 text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+        <div className="max-w-2xl mx-auto space-y-1 text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
           <p>
             {stage === 0
               ? copy.stage0Body
