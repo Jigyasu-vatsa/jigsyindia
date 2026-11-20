@@ -273,20 +273,20 @@ test('Founder copy across en/hi/mai and assistant reflects updated credentials (
 test('buildCrispImageSource maps active assets to Lanczos multi-resolution srcSet and supports subpath bases', () => {
   assert.ok(Object.keys(OPTIMIZED_IMAGE_REGISTRY).length >= 10);
 
-  const smallDirector = buildCrispImageSource('/assets/aistudio/Confident_Corporate_Portrait_at_JIGYASU__1__16c127e6.png', {
+  const smallDirector = buildCrispImageSource('/assets/aistudio/Confident_Corporate_Portrait_at_JIGYASU__1__556345ac.png', {
     targetWidth: 360,
     baseUrl: '/',
   });
   assert.equal(smallDirector.src, '/assets/aistudio/opt/founder_standing-480.jpg');
   assert.ok(smallDirector.srcSet?.includes('/assets/aistudio/opt/founder_standing-240.jpg 240w'));
-  assert.ok(smallDirector.srcSet?.includes('/assets/aistudio/Confident_Corporate_Portrait_at_JIGYASU__1__16c127e6.png 1199w'));
-  assert.equal(smallDirector.fullResSrc, '/assets/aistudio/Confident_Corporate_Portrait_at_JIGYASU__1__16c127e6.png');
+  assert.ok(smallDirector.srcSet?.includes('/assets/aistudio/Confident_Corporate_Portrait_at_JIGYASU__1__556345ac.png 1199w'));
+  assert.equal(smallDirector.fullResSrc, '/assets/aistudio/Confident_Corporate_Portrait_at_JIGYASU__1__556345ac.png');
 
-  const fullResZoom = buildCrispImageSource('/assets/aistudio/Confident_Corporate_Portrait_at_JIGYASU__1__16c127e6.png', {
+  const fullResZoom = buildCrispImageSource('/assets/aistudio/Confident_Corporate_Portrait_at_JIGYASU__1__556345ac.png', {
     preferFullRes: true,
     baseUrl: '/jigsy-site/',
   });
-  assert.equal(fullResZoom.src, '/jigsy-site/assets/aistudio/Confident_Corporate_Portrait_at_JIGYASU__1__16c127e6.png');
+  assert.equal(fullResZoom.src, '/jigsy-site/assets/aistudio/Confident_Corporate_Portrait_at_JIGYASU__1__556345ac.png');
   assert.equal(fullResZoom.srcSet, undefined);
 
   const logoSubpath = buildCrispImageSource('/jigsy-site/assets/aistudio/company_logo_9f4f4bb5.png', {

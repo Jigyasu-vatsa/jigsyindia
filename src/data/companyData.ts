@@ -38,9 +38,9 @@ export const ENGAGEMENT_REQUEST_TYPES = [
 ] as const;
 
 export const FOUNDER_PORTRAITS = {
-  chairperson: resolveAssetUrl('/assets/aistudio/JIGSY_Chairperson_Corporate_Portrait_0c353573.png'),
-  standing: resolveAssetUrl('/assets/aistudio/Confident_Corporate_Portrait_at_JIGYASU__1__16c127e6.png'),
-  headshot: resolveAssetUrl('/assets/aistudio/Confident_Corporate_Portrait_at_JIGYASU_a4741f9c.png'),
+  chairperson: resolveAssetUrl('/assets/aistudio/JIGSY_Chairperson_Corporate_Portrait_aac8c605.png'),
+  standing: resolveAssetUrl('/assets/aistudio/Confident_Corporate_Portrait_at_JIGYASU__1__556345ac.png'),
+  headshot: resolveAssetUrl('/assets/aistudio/Confident_Corporate_Portrait_at_JIGYASU_24e9f1da.png'),
 };
 
 export const DIRECTORS = [

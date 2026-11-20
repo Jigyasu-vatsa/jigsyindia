@@ -45,8 +45,8 @@ export const OPTIMIZED_IMAGE_REGISTRY: Record<string, OptimizedImageSet> = {
       { path: '/assets/aistudio/opt/director1-640.jpg', width: 640 },
     ],
   },
-  'JIGSY_Chairperson_Corporate_Portrait_0c353573.png': {
-    originalPath: '/assets/aistudio/JIGSY_Chairperson_Corporate_Portrait_0c353573.png',
+  'JIGSY_Chairperson_Corporate_Portrait_aac8c605.png': {
+    originalPath: '/assets/aistudio/JIGSY_Chairperson_Corporate_Portrait_aac8c605.png',
     originalWidth: 1142,
     variants: [
       { path: '/assets/aistudio/opt/founder_chairperson-240.jpg', width: 240 },
@@ -54,8 +54,8 @@ export const OPTIMIZED_IMAGE_REGISTRY: Record<string, OptimizedImageSet> = {
       { path: '/assets/aistudio/opt/founder_chairperson-760.jpg', width: 760 },
     ],
   },
-  'Confident_Corporate_Portrait_at_JIGYASU__1__16c127e6.png': {
-    originalPath: '/assets/aistudio/Confident_Corporate_Portrait_at_JIGYASU__1__16c127e6.png',
+  'Confident_Corporate_Portrait_at_JIGYASU__1__556345ac.png': {
+    originalPath: '/assets/aistudio/Confident_Corporate_Portrait_at_JIGYASU__1__556345ac.png',
     originalWidth: 1199,
     variants: [
       { path: '/assets/aistudio/opt/founder_standing-240.jpg', width: 240 },
@@ -63,8 +63,8 @@ export const OPTIMIZED_IMAGE_REGISTRY: Record<string, OptimizedImageSet> = {
       { path: '/assets/aistudio/opt/founder_standing-760.jpg', width: 760 },
     ],
   },
-  'Confident_Corporate_Portrait_at_JIGYASU_a4741f9c.png': {
-    originalPath: '/assets/aistudio/Confident_Corporate_Portrait_at_JIGYASU_a4741f9c.png',
+  'Confident_Corporate_Portrait_at_JIGYASU_24e9f1da.png': {
+    originalPath: '/assets/aistudio/Confident_Corporate_Portrait_at_JIGYASU_24e9f1da.png',
     originalWidth: 771,
     variants: [
       { path: '/assets/aistudio/opt/founder_headshot-160.jpg', width: 160 },
