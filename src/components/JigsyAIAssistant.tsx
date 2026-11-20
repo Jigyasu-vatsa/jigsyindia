@@ -419,14 +419,15 @@ export const JigsyAIAssistant: React.FC<JigsyAIAssistantProps> = ({
           aria-label="Open JIGSY Voice Assistant & Chatbot"
           className="group relative flex items-center gap-2.5 pl-2 pr-4 py-2 rounded-full bg-gradient-to-r from-slate-900 via-blue-900 to-indigo-900 text-white shadow-2xl border border-blue-500/40 hover:border-amber-400 transition-all hover:scale-105 cursor-pointer animate-attract-3x"
         >
-          <span className="relative flex h-10 w-10 items-center justify-center rounded-full bg-white p-0.5 shadow-inner shrink-0">
-            <span className="absolute inset-0 rounded-full border-2 border-amber-400/70 animate-voice-ring pointer-events-none" />
+          <span className="relative flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-b from-sky-50 to-teal-50 p-0.5 shadow-inner shrink-0 overflow-hidden">
+            <span className="absolute inset-0 rounded-full border-2 border-amber-400/80 animate-voice-ring pointer-events-none" />
             <CrispImage
-              src={COMPANY_DETAILS.logoUrl}
-              sizes="40px"
+              src={COMPANY_DETAILS.assistantIconUrl}
+              sizes="44px"
               targetWidth={96}
-              alt="JIGSY AI"
-              className="w-full h-full object-contain rounded-full"
+              loading="eager"
+              alt="Jigs Voice Assistant"
+              className="w-full h-full object-contain"
             />
           </span>
           <div className="text-left leading-tight">
@@ -448,12 +449,13 @@ export const JigsyAIAssistant: React.FC<JigsyAIAssistantProps> = ({
           {/* Header */}
           <div className="bg-gradient-to-r from-slate-900 via-blue-900 to-indigo-900 text-white px-4 py-3 flex items-center justify-between gap-2">
             <div className="flex items-center gap-2.5 min-w-0">
-              <div className="w-9 h-9 rounded-full bg-white p-0.5 border border-amber-400 shrink-0 overflow-hidden">
+              <div className="w-10 h-10 rounded-full bg-gradient-to-b from-sky-50 to-teal-50 p-0.5 border border-amber-400 shrink-0 overflow-hidden">
                 <CrispImage
-                  src={COMPANY_DETAILS.logoUrl}
-                  sizes="36px"
+                  src={COMPANY_DETAILS.assistantIconUrl}
+                  sizes="40px"
                   targetWidth={96}
-                  alt="JIGSY AI Emblem"
+                  loading="eager"
+                  alt="Jigs Voice Assistant"
                   className="w-full h-full object-contain"
                 />
               </div>

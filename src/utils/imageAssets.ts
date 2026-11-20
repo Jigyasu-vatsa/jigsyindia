@@ -96,6 +96,15 @@ export const OPTIMIZED_IMAGE_REGISTRY: Record<string, OptimizedImageSet> = {
       { path: '/assets/aistudio/opt/slide3-840.jpg', width: 840 },
     ],
   },
+  'image_625dc6ec.png': {
+    originalPath: '/assets/aistudio/image_625dc6ec.png',
+    originalWidth: 1779,
+    variants: [
+      { path: '/assets/aistudio/opt/jigs_assistant-96.png', width: 96 },
+      { path: '/assets/aistudio/opt/jigs_assistant-160.png', width: 160 },
+      { path: '/assets/aistudio/opt/jigs_assistant-320.png', width: 320 },
+    ],
+  },
 };
 
 function extractFilename(urlOrPath: string): string {

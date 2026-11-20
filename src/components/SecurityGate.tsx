@@ -25,7 +25,7 @@ import {
   isHoneypotTriggered,
   isManualBypassReady,
 } from '../utils/securityGate';
-import { CrispImage } from './CrispImage';
+import { CorporateHeaderBanner } from './CorporateHeaderBanner';
 
 interface SecurityGateProps {
   language: Language;
@@ -253,14 +253,11 @@ export const SecurityGate: React.FC<SecurityGateProps> = ({
   );
   const [honeypot, setHoneypot] = useState('');
   const [botBlockedMsg, setBotBlockedMsg] = useState<string | null>(null);
-  const [taglineIdx, setTaglineIdx] = useState(0);
 
   const stage2VerifiedRef = useRef(false);
   const completedRef = useRef(false);
   const timersRef = useRef<number[]>([]);
   const intervalsRef = useRef<number[]>([]);
-
-  const taglines = [COMPANY_DETAILS.taglineSanskrit, COMPANY_DETAILS.mottoEnglish];
 
   const clearScheduled = () => {
     timersRef.current.forEach((id) => window.clearTimeout(id));
@@ -304,10 +301,6 @@ export const SecurityGate: React.FC<SecurityGateProps> = ({
   };
 
   useEffect(() => {
-    const mottoInterval = window.setInterval(() => {
-      setTaglineIdx((prev) => (prev + 1) % 2);
-    }, 3500);
-
     // Stage 0 -> Stage 2 after 2.5s
     const s0Timer = window.setTimeout(() => {
       setStage(2);
@@ -338,7 +331,6 @@ export const SecurityGate: React.FC<SecurityGateProps> = ({
     timersRef.current.push(s0Timer);
 
     return () => {
-      window.clearInterval(mottoInterval);
       clearScheduled();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -399,69 +391,47 @@ export const SecurityGate: React.FC<SecurityGateProps> = ({
         </div>
       </div>
 
-      {/* Corporate Header Banner with Language & Theme Controls */}
-      <header className="w-full bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 shadow-sm">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between gap-3">
-          <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full overflow-hidden border-2 border-amber-400 p-0.5 bg-white shadow-md shrink-0">
-            <CrispImage
-              src={COMPANY_DETAILS.logoUrl}
-              sizes="56px"
-              targetWidth={144}
-              loading="eager"
-              alt="JIGSY Official Seal"
-              className="w-full h-full object-contain"
-            />
-          </div>
+      {/* Exact Same Corporate Header Banner across entire site */}
+      <header className="w-full shadow-sm">
+        <CorporateHeaderBanner isDark={isDark} language={language} />
 
-          <div className="text-center flex-1 min-w-0 px-1">
-            <div className="text-xs sm:text-sm md:text-base font-extrabold text-red-700 dark:text-amber-400 tracking-wide uppercase leading-snug brand-font truncate sm:whitespace-normal">
-              {COMPANY_DETAILS.name}
-            </div>
-            <div className="text-[11px] sm:text-xs font-semibold text-slate-600 dark:text-slate-300 italic font-serif mt-0.5">
-              {taglines[taglineIdx]}
-            </div>
-          </div>
+        {/* Slim Gateway Control Bar (matches main site dark nav strip) */}
+        <div className="bg-slate-900 text-white border-t border-slate-800">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-10 flex items-center justify-between gap-2">
+            <span className="font-black text-white text-xs sm:text-sm tracking-wider brand-font select-none">
+              {COMPANY_DETAILS.shortName}
+            </span>
 
-          <div className="flex items-center gap-2 shrink-0">
-            <div className="hidden md:flex items-center">
-              <CrispImage
-                src={COMPANY_DETAILS.makeInIndiaUrl}
-                sizes="44px"
-                targetWidth={96}
-                loading="eager"
-                alt="Make in India"
-                className="h-10 w-auto object-contain mr-2"
-              />
-            </div>
+            <div className="flex items-center gap-2">
+              {/* Compact Language Switcher */}
+              <div className="flex items-center rounded-md bg-slate-800 border border-slate-700 p-0.5">
+                <Globe className="w-3.5 h-3.5 text-blue-400 mx-1.5 hidden sm:block" />
+                {(['en', 'hi', 'mai'] as Language[]).map((code) => (
+                  <button
+                    key={code}
+                    type="button"
+                    onClick={() => onLanguageChange(code)}
+                    className={`px-2 py-0.5 rounded text-[11px] font-bold uppercase transition-colors cursor-pointer ${
+                      language === code
+                        ? 'bg-blue-600 text-white shadow-sm'
+                        : 'text-slate-300 hover:text-white'
+                    }`}
+                  >
+                    {code}
+                  </button>
+                ))}
+              </div>
 
-            {/* Compact Language Switcher */}
-            <div className="flex items-center rounded-lg bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-0.5">
-              <Globe className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400 mx-1.5 hidden sm:block" />
-              {(['en', 'hi', 'mai'] as Language[]).map((code) => (
-                <button
-                  key={code}
-                  type="button"
-                  onClick={() => onLanguageChange(code)}
-                  className={`px-2 py-1 rounded text-[11px] font-bold uppercase transition-colors cursor-pointer ${
-                    language === code
-                      ? 'bg-blue-600 text-white shadow-sm'
-                      : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
-                  }`}
-                >
-                  {code}
-                </button>
-              ))}
+              {/* Theme Toggle */}
+              <button
+                type="button"
+                onClick={onToggleTheme}
+                aria-label="Toggle theme"
+                className="p-1.5 rounded-md bg-slate-800 border border-slate-700 text-amber-300 hover:bg-slate-700 transition-colors cursor-pointer"
+              >
+                {isDark ? <Sun className="w-3.5 h-3.5 text-amber-400" /> : <Moon className="w-3.5 h-3.5 text-slate-200" />}
+              </button>
             </div>
-
-            {/* Theme Toggle */}
-            <button
-              type="button"
-              onClick={onToggleTheme}
-              aria-label="Toggle theme"
-              className="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-amber-400 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors cursor-pointer"
-            >
-              {isDark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
-            </button>
           </div>
         </div>
       </header>

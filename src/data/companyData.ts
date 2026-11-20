@@ -22,6 +22,7 @@ export const COMPANY_DETAILS = {
   taglineSanskrit: 'जिज्ञासु ईक्षण ग्रंथि समृद्धि युक्ति',
   mottoEnglish: 'JIGYASU INTEGRATED GLOBAL SERVICES with YOU',
   logoUrl: resolveAssetUrl('/assets/aistudio/company_logo_9f4f4bb5.png'),
+  assistantIconUrl: resolveAssetUrl('/assets/aistudio/image_625dc6ec.png'),
   makeInIndiaUrl: resolveAssetUrl('/assets/aistudio/MadeInIndia2_9a914348.png'),
   scrollTopIconUrl: resolveAssetUrl('/assets/aistudio/top_move_up_ec85c21c.jpg'),
 };

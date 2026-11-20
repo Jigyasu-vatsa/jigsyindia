@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   Sun,
   Moon,
@@ -18,7 +18,7 @@ import {
 import { Language } from '../types';
 import { COMPANY_DETAILS, SECTORS } from '../data/companyData';
 import { UI_COPY } from '../utils/uiCopy';
-import { CrispImage } from './CrispImage';
+import { CorporateHeaderBanner } from './CorporateHeaderBanner';
 
 interface NavbarProps {
   currentView: string;
@@ -45,20 +45,6 @@ export const Navbar: React.FC<NavbarProps> = ({
   const [isAboutOpen, setIsAboutOpen] = useState(false);
   const [isLangOpen, setIsLangOpen] = useState(false);
 
-  const [taglineIndex, setTaglineIndex] = useState(0);
-  const taglineOptions = [
-    COMPANY_DETAILS.taglineSanskrit,
-    COMPANY_DETAILS.mottoEnglish,
-    language === 'mai' ? 'जिज्ञासु एकीकृत वैश्विक सेवा अहाँक संग' : 'जिज्ञासु ईक्षण ग्रंथि समृद्धि युक्ति',
-  ];
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setTaglineIndex((prev) => (prev + 1) % taglineOptions.length);
-    }, 4500);
-    return () => clearInterval(timer);
-  }, [taglineOptions.length]);
-
   const isAboutActive =
     currentView === 'about' ||
     currentView === 'about-company' ||
@@ -82,57 +68,12 @@ export const Navbar: React.FC<NavbarProps> = ({
         </div>
       </div>
 
-      {/* 2. Main Corporate Header Brand Banner (Company Name strictly untranslated) */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 md:py-3">
-        <div className="flex items-center justify-between gap-4">
-          <button
-            type="button"
-            onClick={() => onNavigate('home')}
-            aria-label="JIGSY INDIA Home"
-            className="flex items-center gap-3 cursor-pointer select-none group shrink-0 bg-transparent border-0 p-0"
-          >
-            <div className="relative w-12 h-12 md:w-16 md:h-16 rounded-full overflow-hidden border-2 border-amber-400 p-0.5 bg-white shadow-md group-hover:scale-105 transition-transform">
-              <CrispImage
-                src={COMPANY_DETAILS.logoUrl}
-                sizes="(max-width: 768px) 48px, 64px"
-                targetWidth={144}
-                loading="eager"
-                alt="JIGSY Official Seal"
-                className="w-10 h-10 sm:w-14 sm:h-14 md:w-16 md:h-16 object-contain filter drop-shadow-[0_2px_8px_rgba(0,0,0,0.4)] group-hover:scale-105 transition-transform"
-              />
-            </div>
-          </button>
-
-      
-          {/* Center: Perfectly fitted, single-line corporate name & 3-second alternating subtitle */}
-          <div className="flex-1 text-center min-w-0 px-1 sm:px-2">
-            <h1
-              className={`font-serif font-black tracking-wide uppercase sm:whitespace-nowrap leading-tight text-[10.5px] sm:text-base md:text-lg lg:text-xl xl:text-2xl transition-colors duration-300 ${
-                isLight
-                  ? 'text-rose-700 drop-shadow-[0_1px_2px_rgba(255,255,255,0.8)]'
-                  : 'text-amber-400 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]'
-              }`}
-            >
-              {COMPANY_DETAILS.name}
-            </h1>
-
-            {/* Alternating Tagline */}
-            <div className="text-[11px] sm:text-xs font-semibold text-slate-600 dark:text-slate-300 min-h-[18px] transition-all duration-500 mt-0.5">
-              <span className="italic font-serif">{taglineOptions[taglineIndex]}</span>
-            </div>
-
-          <div className="shrink-0 flex items-center">
-            <CrispImage
-              src={COMPANY_DETAILS.makeInIndiaUrl}
-              sizes="48px"
-              targetWidth={96}
-              loading="eager"
-              alt="Make in India"
-              className="w-10 h-10 sm:w-14 sm:h-14 md:w-16 md:h-16 object-contain filter drop-shadow-[0_2px_8px_rgba(0,0,0,0.4)]"
-            />
-          </div>
-        </div>
-      </div>
+      {/* 2. Main Corporate Header Brand Banner (Unified across entire portal) */}
+      <CorporateHeaderBanner
+        isDark={isDark}
+        language={language}
+        onHomeClick={() => onNavigate('home')}
+      />
 
       {/* 3. Primary Corporate Navigation Bar */}
       <nav className="bg-slate-900 text-white border-t border-slate-800" aria-label="Primary">
