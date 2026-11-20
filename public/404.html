@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JIGSY INDIA | Jigyasu Integrated Global Services Private Limited</title>
+    <script>
+      (function () {
+        var host = (window.location.hostname || '').toLowerCase();
+        var path = window.location.pathname || '/';
+        var isGithubProjectHost = host.endsWith('.github.io');
+        var basePrefix = '/';
+        var routePath = path;
+
+        if (isGithubProjectHost) {
+          var segments = path.split('/').filter(Boolean);
+          if (segments.length > 0) {
+            basePrefix = '/' + segments[0] + '/';
+            routePath = '/' + segments.slice(1).join('/');
+          }
+        }
+
+        var existingParams = new URLSearchParams(window.location.search || '');
+        existingParams.set('route', routePath || '/');
+        var target = basePrefix + '?' + existingParams.toString() + (window.location.hash || '');
+        window.location.replace(target);
+      })();
+    </script>
+  </head>
+  <body></body>
+</html>

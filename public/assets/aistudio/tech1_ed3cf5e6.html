@@ -1,0 +1,470 @@
+{% extends 'sectors/sector_detail.html' %}
+{% block sector_detail_content %}
+<style>
+.service-card-hover {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.service-card-hover:hover {
+    transform: translateY(-5px); /* Lifts the card slightly */
+    /* REMOVED: background-color:#b97171; */
+    box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175) !important; /* Stronger shadow on hover */
+	background-color:#b97171;
+}
+
+/* Custom CSS for Bootstrap Icon spinner (replaces Font Awesome 'fa-spinner') */
+.spin-slow {
+    animation: spin 2s linear infinite;
+}
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+</style>
+<div class="sector-container text-body">
+
+<section class="py-0 mb-5">
+    <div class="container">
+        <div id="dynamicContentCarousel" class="carousel slide shadow-lg" data-bs-ride="carousel" data-bs-interval="8000">
+            
+            <div class="carousel-inner rounded-3">
+                
+                {# Slide 1: Image (Standard Autoplay) #}
+                <div class="carousel-item active">
+                    <img src="{{ url_for('static', filename='img/content/slide1.jpg') }}" class="d-block w-100" style="height: 400px; object-fit: cover;" alt="Innovation Image">
+                    <div class="carousel-caption d-none d-md-block bg-dark opacity-75">
+                        <h5>Innovating Technology</h5>
+                        <p>See our latest advancements in AI and SaaS solutions.</p>
+                    </div>
+                </div>
+
+                {# Slide 2: Video Slide - Now includes a volume button and relies on JS for autoplay control #}
+                <div class="carousel-item video-slide" id="videoCarouselSlide" data-bs-toggle="modal" data-bs-target="#videoModal">
+                    <video id="carouselVideo" class="d-block w-100" style="height: 400px; object-fit: cover; cursor: pointer;" muted preload="auto" poster="{{ url_for('static', filename='img/content/video_thumbnail.jpg') }}">
+                        <source src="{{ url_for('static', filename='videos/video_thumbnail.mp4') }}" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    
+                    {# --- VOLUME CONTROL BUTTON --- #}
+                    <button id="unmute-btn" type="button" class="btn btn-sm btn-dark position-absolute bottom-0 end-0 m-3" style="z-index: 10;">
+                        {# Bootstrap Icons used here - ensure they are loaded in your base template #}
+                        <i class="bi bi-volume-mute-fill"></i>
+                    </button>
+                    
+                    <div class="carousel-caption d-none d-md-block bg-dark opacity-75">
+                        <h5>Our Vision in Motion</h5>
+                        <p>Click anywhere to view the full video.</p>
+                    </div>
+                </div>
+                
+                {# Slide 3: Static Image (Pause for viewing) #}
+                <div class="carousel-item" data-bs-interval="20000"> 
+                      <img src="{{ url_for('static', filename='img/content/slide3.png') }}" class="d-block w-100" style="height: 400px; object-fit: cover;" alt="Team Building">
+                      <div class="carousel-caption d-none d-md-block bg-dark opacity-75">
+                        <h5>Join Our Team!</h5>
+                      </div>
+                </div>
+            </div>
+            
+            {# Carousel Controls #}
+            <button class="carousel-control-prev" type="button" data-bs-target="#dynamicContentCarousel" data-bs-slide="prev"><span class="carousel-control-prev-icon"></span></button>
+            <button class="carousel-control-next" type="button" data-bs-target="#dynamicContentCarousel" data-bs-slide="next"><span class="carousel-control-next-icon"></span></button>
+        </div>
+    </div>
+</section>
+
+{# Modal for Full Video Playback #}
+<div class="modal fade" id="videoModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">JIGSY Company Vision</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body p-0">
+                {# Video player for the modal #}
+                <video id="modalVideoPlayer" controls width="100%" height="auto">
+                    <source src="{{ url_for('static', filename='videos/video_thumbnail.mp4') }}" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+        </div>
+    </div>
+</div>
+
+<h2 class="my-5 text-center fw-bold">Our Core Expertise & Services 💡</h2>
+<p class="lead text-center text-muted mb-3 fontSizeBelow500px">We craft bespoke digital solutions tailored to the future of the {{ sector.name }} sector.</p>
+
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mb-5">
+    
+    {# Service 1: SaaS Development (Color: Primary) #}
+    <div class="col">
+        <div class="card h-100 p-3 shadow-sm border-0 border-top border-4 border-primary service-card-hover">
+            <div class="card-body">
+                <div class="d-flex align-items-center mb-3">
+                    <i class="bi bi-cloud-fill fs-3 text-primary me-3"></i>
+                    <h5 class="card-title mb-0 fw-bold">SaaS Development</h5>
+                </div>
+                <p class="card-text text-muted small">Building next-generation subscription platforms tailored for high scalability and secure enterprise deployment.</p>
+            </div>
+            <div class="card-footer bg-white border-0 pt-0 text-center">
+                <a href="{{ url_for('public.contact') }}" class="btn btn-sm btn-link p-0 text-primary">Explore Solutions &rarr;</a>
+            </div>
+        </div>
+    </div>
+
+    {# Service 2: Custom Web Application Development (Color: Info) #}
+    <div class="col">
+        <div class="card h-100 p-3 shadow-sm border-0 border-top border-4 border-info service-card-hover">
+            <div class="card-body">
+                <div class="d-flex align-items-center mb-3">
+                    <i class="bi bi-globe fs-3 text-info me-3"></i>
+                    <h5 class="card-title mb-0 fw-bold">Web App Development</h5>
+                </div>
+                <p class="card-text text-muted small">Full-stack web applications using modern frameworks, focused on optimal user experience and robust performance.</p>
+            </div>
+            <div class="card-footer bg-white border-0 pt-0 text-center">
+                <a href="{{ url_for('public.contact') }}" class="btn btn-sm btn-link p-0 text-info">Explore Solutions &rarr;</a>
+            </div>
+        </div>
+    </div>
+    
+    {# Service 3: Database Design and Management (Color: Success) #}
+    <div class="col">
+        <div class="card h-100 p-3 shadow-sm border-0 border-top border-4 border-success service-card-hover">
+            <div class="card-body">
+                <div class="d-flex align-items-center mb-3">
+                    <i class="bi bi-database-fill-check fs-3 text-success me-3"></i>
+                    <h5 class="card-title mb-0 fw-bold">Database Design & Management</h5>
+                </div>
+                <p class="card-text text-muted small">Designing secure, normalized databases and providing reliable, real-time data management solutions.</p>
+            </div>
+            <div class="card-footer bg-white border-0 pt-0 text-center">
+                <a href="{{ url_for('public.contact') }}" class="btn btn-sm btn-link p-0 text-success">Explore Solutions &rarr;</a>
+            </div>
+        </div>
+    </div>
+
+    {# Service 4: IT Infrastructure and Support (Color: Warning) #}
+    <div class="col">
+        <div class="card h-100 p-3 shadow-sm border-0 border-top border-4 border-warning service-card-hover">
+            <div class="card-body">
+                <div class="d-flex align-items-center mb-3">
+                    <i class="bi bi-gear-fill fs-3 text-warning me-3"></i>
+                    <h5 class="card-title mb-0 fw-bold">IT Infrastructure & Support</h5>
+                </div>
+                <p class="card-text text-muted small">Setting up secure, efficient cloud and on-premise infrastructure with dedicated technical support.</p>
+            </div>
+            <div class="card-footer bg-white border-0 pt-0 text-center">
+                <a href="{{ url_for('public.contact') }}" class="btn btn-sm btn-link p-0">Explore Solutions &rarr;</a>
+            </div>
+        </div>
+    </div>
+    
+    {# Service 5: Mobile App Development (Color: Danger) #}
+    <div class="col">
+        <div class="card h-100 p-3 shadow-sm border-0 border-top border-4 border-danger service-card-hover">
+            <div class="card-body">
+                <div class="d-flex align-items-center mb-3">
+                    <i class="bi bi-phone-fill fs-3 text-danger me-3"></i>
+                    <h5 class="card-title mb-0 fw-bold">Mobile App Development</h5>
+                </div>
+                <p class="card-text text-muted small">Crafting seamless native and cross-platform mobile experiences for both iOS and Android.</p>
+            </div>
+            <div class="card-footer bg-white border-0 pt-0 text-center">
+                <a href="{{ url_for('public.contact') }}" class="btn btn-sm btn-link p-0 text-danger">Explore Solutions &rarr;</a>
+            </div>
+        </div>
+    </div>
+    
+    {# NEW Service 6: AI & Machine Learning Solutions (Color: Secondary/Dark) #}
+    <div class="col">
+        <div class="card h-100 p-3 shadow-sm border-0 border-top border-4 border-secondary service-card-hover">
+            <div class="card-body">
+                <div class="d-flex align-items-center mb-3">
+                    <i class="bi bi-robot fs-3 text-secondary me-3"></i>
+                    <h5 class="card-title mb-0 fw-bold">AI & Machine Learning</h5>
+                </div>
+                <p class="card-text text-muted small">Implementing intelligent algorithms for data processing, prediction, and automation to drive business efficiency.</p>
+            </div>
+            <div class="card-footer bg-white border-0 pt-0 text-center">
+                <a href="{{ url_for('public.contact') }}" class="btn btn-sm btn-link p-0 text-secondary">Explore Solutions &rarr;</a>
+            </div>
+        </div>
+    </div>
+    
+</div>
+	
+	<h2 class="my-5 ">Our Works 🚀</h2>
+
+	{% if featured_projects %}
+		{# --- Display Featured Projects --- #}
+		<div class="row row-cols-1 row-cols-md-3 g-4 mb-3">
+			{% for project in featured_projects %}
+			<div class="col">
+				<div class="card h-100 shadow-sm border-{{ loop.cycle('primary', 'info', 'success') }}">
+					<div class="card-header bg-{{ loop.cycle('primary', 'info', 'success') }} text-white">
+						<h5 class="card-title mb-0">{{ project.title }}</h5>
+					</div>
+					<div class="card-body">
+						<p class="card-text small">{{ project.short_description[:90] | default("A cutting-edge solution tailored for your business needs") }}....</p>
+						<ul class="list-unstyled small mt-3">
+							<li><i class="bi bi-person-check-fill text-success me-2"></i> Sector: {{ project.sector.name }}</li>
+						</ul>
+					</div>
+					<div class="card-footer">
+						{# Button to trigger the modal (Modal structure needed separately) #}
+						<button type="button" class="btn btn-outline-primary btn-sm w-100" 
+								data-bs-toggle="modal" 
+								data-bs-target="#projectModal" 
+								data-project-slug="{{ project.slug }}">
+							View Details &rarr;
+						</button>
+					</div>
+				</div>
+			</div>
+			{% endfor %}
+		</div>
+
+		{# --- View All Button (If there are more than 3 projects) --- #}
+		{% if all_projects|length > featured_projects|length %}
+			<div class="text-center mb-5">
+				<button class="btn btn-lg btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#allProjectsModal">
+					View All {{ all_projects|length }} Solutions &rarr;
+				</button>
+			</div>
+		{% endif %}
+		<p class="mb-0">Need a bespoke solution? <a href="{{ url_for('public.contact') }}" class="alert-link">Contact us today.</a></p>
+	{% else %}
+		{# --- Available Soon Fallback --- #}
+		<div class="alert alert-info text-center my-5" role="alert">
+			<h4 class="alert-heading">Displaying Soon!</h4>
+			<p>We are actively developing cutting-edge projects for the {{ sector.name }} sector. Check back shortly for our updated portfolio.</p>
+			<hr>
+			<p class="mb-0">Need a bespoke solution? <a href="{{ url_for('public.contact') }}" class="alert-link">Contact us today.</a></p>
+		</div>
+	{% endif %}
+	
+	<h2 class="my-5" style="text-align:justify">Our Expertise 🔑</h2>
+    <p class="fs-5" style="text-align:justify">JIGSY Tech provides bespoke software solutions, from enterprise-grade SaaS platforms to robust web applications. Our team of experts ensures your digital infrastructure is secure, scalable, and efficient.</p>
+	<p class="fst-italic my-5 service-list-item" style="text-align:center"> → &nbsp; &nbsp; We are your one-stop solution for tech innovation. We specialize in SaaS, web development, database management, and comprehensive IT services.</p>
+
+	<div class="modal fade" id="projectModal" tabindex="-1" aria-labelledby="projectModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+			<div class="modal-content">
+				<div class="modal-header bg-light">
+					<h5 class="modal-title" id="projectModalLabel">Loading Project Details...</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<div id="modal-project-content" class="text-center py-2">
+						<p class="text-muted">Fetching project data...</p>
+						<i class="fas fa-spinner fa-spin fa-3x text-primary"></i> 
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>    
+
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const carousel = document.getElementById('dynamicContentCarousel');
+        const videoSlide = document.getElementById('videoCarouselSlide');
+        const carouselVideo = document.getElementById('carouselVideo');
+        const videoModal = document.getElementById('videoModal');
+        const modalVideoPlayer = document.getElementById('modalVideoPlayer');
+        const unmuteBtn = document.getElementById('unmute-btn'); // NEW VARIABLE
+        let videoTimeout = null;
+        
+        // --- CRITICAL CHECK ---
+        if (!carousel) { console.error("Carousel element (#dynamicContentCarousel) not found!"); return; }
+        if (!videoSlide) { console.error("Video Slide element (#videoCarouselSlide) not found!"); return; }
+        if (!carouselVideo) { console.error("Carousel Video element (#carouselVideo) not found!"); return; }
+
+        // 1. Initialize Bootstrap Carousel
+        const bsCarousel = new bootstrap.Carousel(carousel, {
+            interval: 8000,
+            pause: 'hover'
+        });
+
+        // 2. Logic for Autoplay and Timeout on Video Slide
+        function startVideoAndTimer() {
+            // Check if video is ready to play
+            if (carouselVideo.readyState >= 2) { 
+                // Ensure muted state for autoplay compliance (even if user previously unmuted)
+                carouselVideo.muted = true; 
+                carouselVideo.currentTime = 0;
+                
+                // Reset unmute button to muted icon/text
+                if (unmuteBtn) unmuteBtn.innerHTML = '<i class="bi bi-volume-mute-fill"></i>';
+                
+                // Attempt to play and catch potential browser autoplay errors
+                carouselVideo.play().then(() => {
+                    videoTimeout = setTimeout(() => {
+                        bsCarousel.next();
+                    }, 10000); // 10 seconds
+                }).catch(e => {
+                    console.error("Browser blocked muted video autoplay:", e);
+                    bsCarousel.next(); // Move carousel on failure
+                });
+            } else {
+                // Wait for metadata to load then try again
+                carouselVideo.addEventListener('loadedmetadata', startVideoAndTimer, { once: true });
+            }
+        }
+
+        // --- Event Listeners ---
+
+        // A. Handle Unmute Button Click
+        if (unmuteBtn && carouselVideo) {
+            unmuteBtn.addEventListener('click', function(e) {
+                e.stopPropagation(); // Prevents click from opening the modal
+
+                if (carouselVideo.muted) {
+                    carouselVideo.muted = false;
+                    unmuteBtn.innerHTML = '<i class="bi bi-volume-up-fill"></i>'; 
+                } else {
+                    carouselVideo.muted = true;
+                    unmuteBtn.innerHTML = '<i class="bi bi-volume-mute-fill"></i>';
+                }
+            });
+        }
+        
+        // B. On Carousel Slide Event (entering a slide)
+        carousel.addEventListener('slide.bs.carousel', function (event) {
+            const targetElement = event.relatedTarget;
+            
+            // FIX: Ensure targetElement exists before trying to read its properties
+            if (!targetElement) {
+                console.warn("Carousel target element is undefined during slide event.");
+                return; 
+            }
+
+            if (targetElement.classList.contains('video-slide')) {
+                bsCarousel.pause();
+                startVideoAndTimer(); // Start video playback and 10s timer
+            } else {
+                if (videoTimeout) clearTimeout(videoTimeout);
+                bsCarousel.cycle();
+            }
+        });
+
+        // C. On Carousel Slid Event (leaving a slide)
+        carousel.addEventListener('slid.bs.carousel', function (event) {
+            const fromElement = event.from;
+            // Add robustness check for fromElement as well
+            if (fromElement && fromElement.classList.contains('video-slide')) {
+                carouselVideo.pause();
+                carouselVideo.currentTime = 0;
+                if (videoTimeout) clearTimeout(videoTimeout);
+            }
+        });
+
+        // D. Modal Playback Logic (For Clicking the Slide)
+        if (videoModal && modalVideoPlayer) {
+            videoModal.addEventListener('show.bs.modal', function () {
+                bsCarousel.pause();
+                carouselVideo.pause();
+                
+                // Set modal video volume/mute based on the carousel video's last state
+                modalVideoPlayer.muted = carouselVideo.muted;
+                modalVideoPlayer.currentTime = 0;
+                
+                // If it was muted on the carousel, start the modal video at low volume/unmuted
+                if (modalVideoPlayer.muted) {
+                    modalVideoPlayer.volume = 0.4; 
+                    modalVideoPlayer.muted = false; 
+                } else {
+                    // Start it at full volume if the user had unmuted the carousel video
+                    modalVideoPlayer.volume = 1.0; 
+                }
+                
+                modalVideoPlayer.play();
+            });
+
+            videoModal.addEventListener('hide.bs.modal', function () {
+                modalVideoPlayer.pause();
+                modalVideoPlayer.currentTime = 0;
+                
+                // Ensure the carousel video is Muted again for the next autoplay cycle
+                carouselVideo.muted = true; 
+                if (unmuteBtn) unmuteBtn.innerHTML = '<i class="bi bi-volume-mute-fill"></i>';
+                
+                bsCarousel.cycle();
+            });
+        } else {
+            console.error("Modal elements (#videoModal or #modalVideoPlayer) not found!");
+        }
+    });
+
+    // Get the modal element
+    const projectModal = document.getElementById('projectModal');
+    
+    // Check if the modal element exists before adding the listener
+    if (projectModal) {
+        // Listen for the Bootstrap modal 'show' event (when it's about to open)
+        projectModal.addEventListener('show.bs.modal', function (event) {
+            // Get the button that triggered the modal
+            const button = event.relatedTarget; 
+            
+            // Extract the project slug from the button's data attribute
+            const projectSlug = button.getAttribute('data-project-slug');
+            
+            const modalTitle = projectModal.querySelector('#projectModalLabel');
+            const modalBody = projectModal.querySelector('#modal-project-content');
+
+            // 1. Set temporary loading state (Updated spinner for Font Awesome compatibility if 'fas fa-spinner' is used)
+            modalTitle.textContent = `Details for: ${projectSlug}`;
+            modalBody.innerHTML = '<div class="text-center py-5"><p class="text-muted">Fetching project data...</p><i class="fas fa-spinner fa-spin fa-3x text-primary"></i></div>';
+            
+            // 2. Fetch project details from your API
+            fetch(`/api/project-details/${projectSlug}`) 
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(project => {
+                    // 3. Inject the dynamic content into the modal body
+                    modalTitle.textContent = project.title;
+                    modalBody.innerHTML = `
+                        <div class="row mt-0 pt-0">
+                            <div class="col-12">
+                                <h3>${project.title}</h3>
+                                <p class="lead">${project.short_description}</p>
+                                <hr>
+                            </div>
+                            <div class="col-8 offset-2">
+                                <img src="/static/uploads/projects/${project.image_name}" class="img-fluid rounded shadow-sm mb-3"  alt="${project.title}">
+                            </div>
+                            <div class="col-12">
+
+                                <hr>
+                                <h4>Full Description</h4>
+                                <p>${project.full_description}</p>
+                                <p class="text-muted small">Sector ID: ${project.sector_name}</p>
+								<p class="text-muted small">Visit us: ${project.slug}</p>
+                            </div>
+                        </div>
+                    `;
+                })
+                .catch(error => {
+                    // Handle errors during fetch
+                    console.error('Error fetching project details:', error);
+                    modalTitle.textContent = "Error Loading Details";
+                    modalBody.innerHTML = '<div class="alert alert-danger">Could not load project details. Please try again later.</div>';
+                });
+        });
+    }
+</script>
+
+{% endblock %}

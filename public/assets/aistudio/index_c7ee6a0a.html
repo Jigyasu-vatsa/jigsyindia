@@ -1,0 +1,858 @@
+<!doctype html>
+<html lang="en" data-bs-theme="light">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>JIGSY INDIA - Jigyasu Integrated Global Services Private Limited</title>
+	
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="shortcut icon" type="image/x-icon" href="img/company_logo.png">
+    <link rel="stylesheet" href="css/style.css">
+	
+    <style>
+      /* Basic styles for responsive and professional look */
+      body {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        transition: background-color 0.3s, color 0.3s;
+		overflow-x: hidden !important;
+        font-family: 'Inter', sans-serif; /* Set default font */
+      }
+      main {
+        flex: 1;
+		padding:2rem 0.5rem;
+      }
+      .footer-brand {
+        font-weight: bold;
+        color: var(--bs-body-color);
+      }
+      /* Custom styles for professional appearance */
+      .text-warning {
+        color: #ffc107 !important; /* Bootstrap warning color */
+      }
+      .hover-warning:hover {
+        color: #ffc107 !important;
+      }
+      .hover-blue:hover {
+        color: #0e76a8 !important; /* LinkedIn Blue */
+      }
+      .hover-primary:hover {
+        color: #0d6efd !important; /* Bootstrap Primary/Facebook Blue */
+      }
+      
+      /* --- FIX 2: Corrected CSS for Spinning Circle --- */
+      .countdown-circle {
+          width: 150px;
+          height: 150px;
+          /* FIX: Inherit color from JS-applied class (e.g., text-primary) */
+          border: 10px solid currentColor; 
+          /* Ensure the spinning gap is transparent, using !important to override the currentColor on top */
+          border-top: 10px solid transparent !important; 
+          border-radius: 50%;
+          animation: spin 1s linear infinite;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 2rem;
+          font-weight: bold;
+          margin: 2rem auto;
+		  transition: all 0.5s ease;
+	    animation: spin 1s linear infinite, glow-cycle 3s linear infinite;
+	    background: radial-gradient(circle, rgba(0, 210, 255, 0.05) 0%, transparent 70%);
+	  }
+   
+      @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+      }
+		
+      /* Color Cycling Animation */
+		@keyframes glow-cycle {
+		    0% { 
+		        border-top-color: #00d2ff; 
+		        box-shadow: 0 0 15px rgba(0, 210, 255, 0.4);
+		        filter: hue-rotate(0deg); 
+		    }
+		    100% { 
+		        border-top-color: #00d2ff;
+		        box-shadow: 0 0 15px rgba(0, 210, 255, 0.4);
+		        filter: hue-rotate(360deg); 
+		    }
+		}
+
+		/* Pulse effect for the background */
+		.bg-futuristic-pulse {
+		    background: radial-gradient(circle, rgba(0, 210, 255, 0.08) 0%, rgba(255, 255, 255, 0) 100%);
+		    animation: pulse-bg 4s ease-in-out infinite;
+		}
+		
+		@keyframes pulse-bg {
+		    0%, 100% { opacity: 0.3; transform: scale(1); }
+		    50% { opacity: 0.7; transform: scale(1.05); }
+		}
+	
+	  @media (max-width:500px) {
+		  .maintainace_head{
+			font-size:1.2rem;
+		  }
+		  .maintainace_content{
+			font-size:0.8rem;
+		  }
+		  .maintainace_timer{
+			font-size:0.5rem;
+		  }
+		  .verification_head{
+			font-size:1rem;
+			margin:0;
+			padding:0;
+		  }
+		  .verification_button{
+			font-size:0.7rem;
+			margin:25% 0 0 0 !important;
+			padding:5px;
+		  }
+		  .verification_content{
+			font-size:0.7rem;
+			margin:0;
+			padding:0;
+		  }
+	  }
+
+	/* The Scanning Laser Line */
+	#scanner-overlay {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 4px;
+		background: linear-gradient(to right, transparent, #00d2ff, #00ff88, #00d2ff, transparent);
+		box-shadow: 0 0 15px 2px rgba(0, 210, 255, 0.7);
+		z-index: 10;
+		pointer-events: none; /* Allows clicking through the line */
+		opacity: 0;
+	}
+	
+	/* Vertical Scanning Animation */
+	.active-scan {
+		animation: scan-move 3s ease-in-out infinite;
+		opacity: 1 !important;
+	}
+	
+	@keyframes scan-move {
+		0% { top: 0%; }
+		50% { top: 100%; }
+		100% { top: 0%; }
+	}
+	
+	/* Futuristic "Locked" Container */
+	.scanning-container {
+		position: relative;
+		overflow: hidden;
+		border: 1px solid rgba(0, 210, 255, 0.2);
+		border-radius: 10px;
+		transition: all 0.5s ease;
+	}
+	
+	.scanning-container.verified {
+		border-color: #198754;
+		box-shadow: inset 0 0 20px rgba(25, 135, 84, 0.2);
+	}
+    </style>
+  </head>
+  <body >
+    <div class="full-screen-background-layer"></div>
+	
+	<!-- Top Animated Strip -->
+    <div class="animated-strip no-print nodspBelow250px">
+		<div class="animated-marquee">
+			<span><i class="bi bi-megaphone-fill" style="margin:auto 12%;"> &nbsp; &nbsp; Contact us for Software as a service, IT services, mass hirings, campus recruit, digital outreach, consultancy, event managements and many more &nbsp; &nbsp; </i></span>
+			<span><i class="fas fa-bullhorn" style="margin-right:10%;">&nbsp; &nbsp; We're actively delivering services....  &nbsp; &nbsp; </i></span>
+			<span><i class="bi bi-megaphone-fill" style="margin-right:10%;"> &nbsp; &nbsp; Hi, Jobseekers! Check out for jobs now, as we'are open for hiring.... &nbsp; &nbsp; </i></span>
+		
+		</div>
+	</div>
+    <!-- End Top Animated Strip -->
+
+    <section class="container">
+		<div class="row g-0 align-items-center justify-content-center mt-4 mt-md-3 mb-0 mb-md-1 noMarginBelow250px">
+		
+			<div class="col-12 col-md-1 text-center mb-0 pe-md-3 d-flex justify-content-center">
+				<img src="img/company_logo1.png"
+					 class="img-fluid logoSizeSmallD"
+				 style="border-radius:50%;"
+				 alt="JIGSY Logo"
+				 height="120">
+			</div>
+
+			<div class="col-12 col-md-10 my-0 text-center">
+				<div class="fw-bold text-danger fs-1 ps-md-2 dark-mode-only-color my-0 my-md-2 companyNameBase" style="font-family:math">JIGYASU INTEGRATED GLOBAL SERVICES PRIVATE LIMITED</div>
+				<div class="small text-body fs-6 my-0 my-md-2 companyMottoBase" style="font-family:math;" id="tagline-motto">
+					<span id="animated-text"></span>
+				</div>
+			</div>
+			<div class="col-12 col-md-1 text-center mb-0 d-none d-lg-flex justify-content-center doubleLogo">
+				<img src="img/MadeInIndia2.png"
+					 class="img-fluid"
+				 style="border-radius:0; max-width: 100px;"
+				 alt="Made In INDIA"
+				 height="120">
+			</div>
+		</div>
+	</section>
+
+    <nav class="navbar navbar-expand-lg sticky-top m-0 p-1 mb-0 mb-md-1 bg-body no-print noMarginBelow250px border-bottom shadow-sm">
+      <div class="container p-0">
+        <a class="navbar-brand d-flex align-items-center" href="#">
+          <div class="fw-bold border-0 " style="font-family:math">JIGSY &nbsp; INDIA</div>
+        </a>
+        <button class="navbar-toggler noMarginBelow250px" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navMenu">
+          <ul class="navbar-nav ms-auto mb-2 mb-lg-0 fw-bold">
+            <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
+            <li class="nav-item"><a class="nav-link" href="#services_nav">Services</a></li>
+            <li class="nav-item"><a class="nav-link" href="#contact_info">Contact</a></li>
+          </ul>
+        </div>
+        <button id="theme-toggle" class="btn btn-sm btn-outline-secondary ms-3 bg-dark noMarginBelow250px text-white">
+          <span class="d-none d-sm-inline">☀️ 🌙</span>
+        </button>
+      </div>
+    </nav>
+
+	  
+    <main>
+      <div class="container text-center py-4 my-5">
+        <h1 class="display-6 fw-bold text-warning mb-4 maintainace_head">⏩ Conneting You To JIGSY ⏩</h1>
+        
+        <div id="countdown-display" class="text-center"> </div>
+        
+        <p class="text-muted small maintainace_timer mb-0" id="timer-note">
+          You will be automatically redirected to the official website <span id="time-left" class="fw-bold text-danger">shortly</span>.
+        </p>
+		
+        <div id="verification-prompt-area-top" class="row justify-content-center my-3 d-none">
+        </div>
+        
+		<hr class="w-50 mx-auto border-warning my-4" >
+		
+        <div class="row mx-md-5 my-4 py-5 p-md-3 justify-content-between maintainace_content" id="services_nav">
+			
+          <h3 style="text-align:left; padding: 20px 0 25px 10px !important;" class="maintainace_head">Services</h3>
+			<div class="col-md-3 card bg-body mb-1 mb-md-0">
+				<div class="card-header fw-bold"> JIGSY INDIA </div>
+				<div class="card-header bg-body my-auto border-0 fw-light"> You can explore our professional services for all sectors with this official website </div>
+				<div class="card-footer text-muted small">
+					<div class="spinner-border spinner-border-sm me-2" role="status"></div>
+					Automatically redirecting shortly...
+				</div>
+			</div>
+			
+			<div class="col-md-3 card bg-body mb-1 mb-md-0">
+				<div class="card-header fw-bold"> Founders Portfolio </div>
+				<div class="card-header bg-body my-auto border-0 fw-light"> Here you can explore about the founder of JIGSY family </div>
+				<div class="card-footer"> jigyasu.jigsy.in </div>
+			</div>
+			
+			<div class="col-md-3 card bg-body mb-1 mb-md-0">
+				<div class="card-header fw-bold"> All Services </div>
+				<div class="card-header bg-body my-auto border-0 fw-light"> You can navigate all publicly available services for the citizens from here </div>
+				<div class="card-footer"> listing shortly </div>
+			</div>
+          <div id="verification-prompt-area-bottom" class="row justify-content-center my-4 d-none">
+          </div>
+        </div>
+		
+        <hr class="border-warning my-4">
+		
+		<p class="lead maintainace_content fw-light">
+          Our service has temporarily paused due to maintainance works.<br>
+          To continue to the page you requested, please wait we are checking if requested page is available and ready for serving or not, if available redirecting you to official website shortly.
+        </p>
+		
+		
+        
+        <p class="mt-5">
+          <a href="https://jigsyindia.jigsy.in" id="manual-redirect-btn" class="btn btn-lg btn-outline-danger disabled">
+            <i class="bi bi-arrow-right-circle me-2"></i> Redirect Now
+          </a>
+        </p>
+
+		  <hr class="w-50 mx-auto border-warning my-5 py-3">
+
+			 <h6 style="text-align:center" class="p-0 py-1 mt-5 mb-1 fw-bold maintainace_content" id="contact_info"> 🫵 You are important to us<br><br>And you can also mail us your query at <br><br>📧 <a href="mailto:jigsy25@gmail.com" class="text-decoration-none">jigsy25@gmail.com</a> 📨 <br><br>we will respond to your mail as soon as possible🤞</h6>
+
+		  <hr class="w-50 mx-auto border-none my-5 py-5">
+      </div>
+    </main>
+    <footer class="bg-dark text-white pt-5 pb-3" style="font-family: 'Inter', sans-serif;">
+      <div class="container">
+        <div class="row pb-4 border-bottom border-secondary">
+          <div class="col-sm-6 col-md-4 mb-4 mb-lg-0">
+            <h4 class="text-xl font-weight-bold mb-3 text-warning footer-brand">JIGSY INDIA</h4>
+            <div class="small space-y-1">
+              <p class="mb-1"><i class="bi bi-geo-alt-fill me-2"></i><a href="https://www.google.com/maps/search/?api=1&query=Darbhanga,+Bihar,+India" target="_blank" class="text-decoration-none"> Darbhanga, Bihar, India</a></p>
+              <p class="mb-1"><i class="bi bi-envelope-fill me-2"></i> <a href="mailto:jigsy25@gmail.com" class="text-decoration-none">jigsy25@gmail.com</a></p>
+              <p class="mb-3"><i class="bi bi-telephone-fill me-2"></i> <a href="tel:+919431400022" class="text-decoration-none fw-bold">+91 94314 00022</a></p>
+            </div>
+          </div>
+
+          <div class="col-sm-6 col-md-4 offset-md-1 mb-4 mb-lg-0 m-auto p-auto">
+            <div class="row">
+              <div class="col-sm-6 mb-3 mb-sm-0">
+                <h5 class="text-white mb-3 h6">Our Sectors</h5>
+                <ul class="list-unstyled small space-y-1">
+                  <li class="mb-1"><a href="#" class=" text-decoration-none hover-warning"><i class="bi bi-chevron-right me-1 text-warning"></i> All Offerings</a></li>
+                  <li class="mb-1"><a href="#" class=" text-decoration-none hover-warning"><i class="bi bi-chevron-right me-1 text-warning"></i> Tech Solutions</a></li>
+                  <li class="mb-1"><a href="#" class=" text-decoration-none hover-warning"><i class="bi bi-chevron-right me-1 text-warning"></i> Youth Development</a></li>
+                  <li class="mb-1"><a href="#" class=" text-decoration-none hover-warning"><i class="bi bi-chevron-right me-1 text-warning"></i> Digital & Legal Consult</a></li>
+                </ul>
+              </div>
+
+              <div class="col-sm-6">
+                <h5 class="text-white mb-3 h6">Help & Legal</h5>
+                <ul class="list-unstyled small space-y-1">
+                  <li class="mb-1"><a href="#" class=" text-decoration-none hover-warning"><i class="bi bi-chevron-right me-1 text-warning"></i> About Us</a></li>
+                  <li class="mb-1"><a href="#contact_info" class=" text-decoration-none hover-warning"><i class="bi bi-chevron-right me-1 text-warning"></i> Conatct Us</a></li>
+                  <li class="mb-1"><a href="#" class=" text-decoration-none hover-warning"><i class="bi bi-chevron-right me-1 text-warning"></i> Privacy Policy</a></li>
+                  <li class="mb-1"><a href="#" class=" text-decoration-none hover-warning"><i class="bi bi-chevron-right me-1 text-warning"></i> Terms of Service</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-2 offset-md-1 my-1 text-center">
+            <div class="d-flex social-icons justify-content-center align-items-center mb-3">
+              <a href="https://linkedin.com/company/jigsy" target="_blank" class=" me-3 fs-4 hover-blue text-white"><i class="bi bi-linkedin"></i></a>
+              <a href="https://facebook.com/jigsy25" target="_blank" class=" me-3 fs-4 hover-primary text-white"><i class="bi bi-facebook"></i></a>
+            </div>
+            <div class="small fw-bold text-secondary my-1">
+              Total Visitors: <span id="visitor-count" class="text-white fw-bold">Lo..</span>
+            </div>
+            <div class="small text-secondary my-1">
+              <a href="#" class=" text-decoration-none hover-warning">
+                <i class="bi bi-chevron-right me-1 text-warning"></i> Personalized Chatting
+              </a>
+            </div>
+          </div>
+          
+          <div class="col-md-4 mt-3 text-xs text-center text-secondary">
+            <p class="mb-0">जिज्ञासु ईक्षण ग्रंथि समृद्धि युक्ति</p>
+          </div>
+          <div class="col-md-4 mt-3 text-xs text-center text-secondary">
+            <p class="mb-0">DPIIT: DIPP228528</p>
+          </div>
+          <div class="col-md-4 mt-3 text-xs text-center text-secondary">
+            <p class="mb-0">GSTIN: 10AAHCJ0404B1ZN</p>
+          </div>
+          <div class="col-md-4 mt-3 text-xs text-center text-secondary">
+            <p class="mb-0">MSME: UDYAM-BR-34-0051280</p>
+          </div>
+          <div class="col-md-4 mt-3 text-xs text-center text-secondary">
+            <p class="mb-0">CIN: U62099BR2025PTC078592</p>
+          </div>
+          <div class="col-md-4 mt-3 text-xs text-center text-secondary">
+            <p class="mb-0">Jigyasu Integrated Global Services with You </p>
+          </div>
+        </div>
+
+        <div class="pt-3 text-center text-secondary small" style="font-family: initial;">
+          <div class="mb-1">Developed & Maintained by Mr. Jigyasu Vatsa</div>
+          <div class="mb-1">© 2025 <!--script>document.write(new Date().getFullYear());</script--> - 
+              <script>
+                const currentYear = new Date().getFullYear();
+                document.write(currentYear !== 2025 ? currentYear : '');
+              </script>
+              All rights reserved. Hosted by Jigyasu Integrated Global Services Private Limited</div>
+        </div>
+      </div>
+    </footer>
+    <button onclick="topFunction()" id="myBtn" class="p-1 rounded-5" title="Go to top"><img src="img/top_move_up.jpg" alt="Move Up" width="25" height="40"></button>
+	
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/jigsy.js"></script>
+<script>
+    // Theme Toggle Logic (Kept as is for full code)
+    document.addEventListener("DOMContentLoaded", () => {
+        const themeToggle = document.getElementById("theme-toggle");
+        const storedTheme = localStorage.getItem("theme") || (window.matchMedia('(prefers-color-scheme: dark)').matches ? "dark" : "light");
+        document.documentElement.setAttribute("data-bs-theme", storedTheme);
+        if (themeToggle) {
+            themeToggle.innerHTML = storedTheme === "dark"
+                ? '<span class="d-none d-sm-inline">☀️ Light </span>'
+                : '<span class="d-none d-sm-inline">🌙 Dark </span>';
+            themeToggle.addEventListener("click", () => {
+                const current = document.documentElement.getAttribute("data-bs-theme");
+                const next = current === "dark" ? "light" : "dark";
+                document.documentElement.setAttribute("data-bs-theme", next);
+                localStorage.setItem("theme", next);
+                themeToggle.innerHTML = next === "dark"
+                    ? '<span class="d-none d-sm-inline"> ☀️ Light </span>'
+                    : '<span class="d-none d-sm-inline"> 🌙 Dark </span>';
+            });
+        }
+    });
+
+    // Motto Text Cycle Logic (Kept as is for full code)
+    const texts = ["जिज्ञासु ईक्षण ग्रंथि समृद्धि युक्ति", "JIGYASU INTEGRATED GLOBAL SERVICES with YOU"];
+    let i = 0;
+    function cycleText(){
+        const animatedTextElement = document.getElementById("animated-text");
+        if (animatedTextElement) {
+            animatedTextElement.innerText = texts[i];
+            i=(i+1)%texts.length;
+        }
+    }
+    cycleText();
+    setInterval(cycleText, 4000);
+
+
+    // --- Staged Countdown and Redirect Logic ---
+
+    //const REDIRECT_URL = "https://jigsyindia.jigsy.in"; // Using # for testing, ensure this is correct on live site  --------------------
+
+	const REDIRECT_URL = "https://maintenance.jigsy.in"; // Using # for maintainance site
+	
+	//const INITIAL_COUNT = 60; // Total time until redirection (seconds)  ----------------
+
+	const INITIAL_COUNT = 45; // Total time until redirection (seconds)
+
+	
+    // UPDATED REQUIREMENT: Minimum total wait must be 60 - 30 (Stage 3 duration) = 30 seconds.
+    const MINIMUM_TOTAL_WAIT = 30; 
+
+    const mainHeading = document.querySelector('.maintainace_head');
+    const countdownCircle = document.getElementById('countdown-display');
+    const timeLeftElement = document.getElementById('time-left');
+    const manualRedirectBtn = document.getElementById('manual-redirect-btn');
+
+    // Content container elements
+    const servicesPanel = document.getElementById('services_nav'); 
+    const timerNote = document.getElementById('timer-note'); 
+    const verificationPromptAreaTop = document.getElementById('verification-prompt-area-top'); 
+    const verificationPromptAreaBottom = document.getElementById('verification-prompt-area-bottom'); 
+    
+
+    let totalTimeElapsed = 0;
+    let timerInterval = null;
+    let verificationComplete = false; 
+    let stage3Timeout = null; 
+    
+    // --- Utility Functions ---
+    function updateDisplay(iconClass, colorClass, isSpinning, initialContent) {
+        if (countdownCircle) {
+            // Reset base classes
+            countdownCircle.className = 'text-center mx-auto d-flex align-items-center justify-content-center';
+			
+            if (isSpinning) {
+                // Spinning circle visual (Stage 0 and Stage 3)
+                // colorClass sets the text color AND the border color via CSS 'currentColor'
+                countdownCircle.classList.add('countdown-circle'); 
+                countdownCircle.style.height = '150px'; 
+				countdownCircle.style.width = '150px';
+
+				// Add pulse background to the parent container if it exists
+	            if (countdownCircle.parentElement) {
+	                countdownCircle.parentElement.classList.add('bg-futuristic-pulse');
+	            }
+                
+                // Display remaining time 
+                //countdownCircle.innerHTML = totalTimeElapsed > 0 ? Math.round(Math.max(0, INITIAL_COUNT - totalTimeElapsed)) : '<i class=" bi bi-lightning-charge "></i>';
+
+				// Inner content: Icon during Stage 0, Numbers during Stage 3
+				// Note: We wrap the content in a div to "un-spin" it so the number stays upright
+				const innerContent = totalTimeElapsed > 0 
+					? Math.round(Math.max(0, INITIAL_COUNT - totalTimeElapsed)) 
+					: `<i class="${iconClass}" style="font-size: 3rem;"></i>`;
+				
+				countdownCircle.innerHTML = `<div style="animation: spin 1s linear infinite reverse;">${innerContent}</div>`;
+				
+            } else {
+                // Static icon visual (Stage 2 - Verification)
+                // Explicitly remove the spinning class
+                countdownCircle.classList.remove('countdown-circle');
+                countdownCircle.style.height = '50px'; 
+                countdownCircle.innerHTML = `<i class="${iconClass} ${colorClass}" style="font-size: 2rem;"></i>`;
+            }
+        }
+
+		
+        // Update the main content paragraph with the stage message
+        const mainContentPara = document.querySelector('.lead.maintainace_content');
+        if (mainContentPara) mainContentPara.innerHTML = initialContent;
+    }
+
+    function setTimeDisplayMessage(text, colorClass) {
+        if (timeLeftElement) {
+            timeLeftElement.className = 'fw-bold';
+            timeLeftElement.classList.add(colorClass);
+            timeLeftElement.innerText = text;
+        }
+    }
+    
+    function startWakeupProcess() {
+        if (timerInterval) clearInterval(timerInterval);
+        totalTimeElapsed = 0;
+        verificationComplete = false; 
+        if (stage3Timeout) clearTimeout(stage3Timeout);
+
+		//------------------------------  STAGE 0  --------------------------
+		
+        // Stage 0: Initial UI Setup (10s)
+        mainHeading.innerHTML = '🛑 Forwarding Request 🛑';
+        updateDisplay('bi bi-lightning-charge', 'text-primary fw-light', true, // Spinning ON
+            `Our service may face some delays due to security check standards.
+            <br>Please wait while we perform an initial check. This process takes approximately 5 seconds.
+            <p class="mt-4 fw-bold">~We appreciate your patience.</p>`);
+        setTimeDisplayMessage('shortly', 'text-primary');
+
+        if (manualRedirectBtn) {
+            manualRedirectBtn.classList.add('disabled', 'btn-outline-danger');
+            manualRedirectBtn.classList.remove('btn-success', 'btn-outline-warning');
+            manualRedirectBtn.innerHTML = '<i class="bi bi-arrow-right-circle me-2"></i> Redirect Now';
+            manualRedirectBtn.href = "#";
+        }
+        
+        if (verificationPromptAreaTop) {
+            verificationPromptAreaTop.classList.add('d-none');
+            verificationPromptAreaTop.innerHTML = '';
+        }
+        if (verificationPromptAreaBottom) {
+             verificationPromptAreaBottom.classList.add('d-none');
+             verificationPromptAreaBottom.innerHTML = '';
+        }
+        
+        if (servicesPanel) {
+            servicesPanel.style.opacity = '0.1';
+        }
+		if (timerNote) {
+            timerNote.style.opacity = '0';
+        }
+		if (mainHeading) {
+            mainHeading.style.opacity = '0';
+        }
+
+        fetch(REDIRECT_URL, { method: 'GET', mode: 'no-cors' })
+            .catch(e => console.warn("Wakeup request sent."));
+
+		//------------------------------  STAGE 1  --------------------------
+
+        // Stage 1: Advance to Stage 2 (X after 10 seconds = 10000s X  Now, INITIAL_COUNT by 6 = INITIAL_COUNT/6)
+		const stage1time = Math.round((INITIAL_COUNT*1000)/6);
+        setTimeout(stage2_Verification, stage1time);
+        totalTimeElapsed = stage1time/1000;
+    }
+
+	//------------------------------  STAGE 2  --------------------------
+
+    function stage2_Verification() {
+		
+		if (mainHeading) {
+            mainHeading.style.opacity = '1';
+        }
+		
+        // Stage 2: Interactive Human Verification (25s max)
+        mainHeading.innerHTML = '🔒 Human Verification Required 🔒';
+        updateDisplay('bi bi-shield-lock-fill', 'text-info fw-light', false, // Spinning OFF
+            `To ensure optimal performance and security against automated requests, a quick human verification is required.
+            <br>Kindly click the *Verification Button* inside the Services section to proceed faster.
+            <p class="mt-4">~Your cooperation helps us maintain service integrity.</p>`);
+        setTimeDisplayMessage('shortly', 'text-info');
+        
+        if (servicesPanel) servicesPanel.style.opacity = '1';
+
+		// Add the laser line to the services panel
+		if (servicesPanel) {
+		    servicesPanel.classList.add('scanning-container');
+		    
+		    // Create the scanner element if it doesn't exist
+		    if (!document.getElementById('scanner-overlay')) {
+		        const scanner = document.createElement('div');
+		        scanner.id = 'scanner-overlay';
+		        servicesPanel.appendChild(scanner);
+		    }
+		    
+		    // Turn on the laser
+		    document.getElementById('scanner-overlay').classList.add('active-scan');
+		}
+        
+        // 1. Inject the Verification Instructions ABOVE Services
+        if (verificationPromptAreaTop) verificationPromptAreaTop.classList.remove('d-none');
+        verificationPromptAreaTop.innerHTML = `
+             <div class="col-12 col-md-8 col-lg-6 mb-4">
+                <div class="card shadow border-info bg-body">
+                    <div class="card-body text-center p-3">
+                        <h5 class="card-title text-info fw-bold mb-1 maintainace_head"><i class="bi bi-robot me-2"></i> Anti-Bot Security Check</h5>
+                        <p class="card-text small text-muted mb-0 maintainace_content fw-light"><br>Scroll down to the bottom of *Services* section and click the *Complete Verification* button to speed up verification.<br> Auto verification may take upto ~30 seconds.</p>
+                    </div>
+                </div>
+            </div>
+        `;
+		
+        // 2. Inject the Verification Card with the BUTTON BELOW Services
+        if (verificationPromptAreaBottom) verificationPromptAreaBottom.classList.remove('d-none');
+        verificationPromptAreaBottom.innerHTML = `
+            <div class="col-12 col-md-8 col-lg-6 mt-5">
+                <div id="verification-card" class="card shadow border-info bg-body">
+                    <div class="card-body text-center p-4">
+                        <h5 class="card-title text-info fw-bold verification_head"><i class="bi bi-cursor me-2"></i> Verification Panel</h5>
+                        
+                        <button id="verification-button" class="btn btn-lg btn-info mt-3 fw-bold verification_button">
+                            Complete Verification
+                        </button>
+                        
+                        <div id="progress-message" class="mt-4 small text-dark text-start">
+                            <label for="verification-progress" class="form-label mb-1 verification_content text-body">Process Status:</label>
+                            <div class="progress" style="height: 25px;">
+                                <div id="verification-progress" class="progress-bar bg-info verification_content" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="25">
+                                    Awaiting User Click...
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        const verificationButton = document.getElementById('verification-button');
+        const progressBar = document.getElementById('verification-progress');
+        
+        const stage2StartTime = Date.now();
+        //const stageDuration = 25000;
+
+		const stageDuration = Math.round(((INITIAL_COUNT/2)-(INITIAL_COUNT/10))*1000);
+        
+        const handleInteraction = () => {
+            if (!verificationComplete) {
+                // UI updates for success (immediate feedback)
+                verificationButton.classList.remove('btn-info');
+                verificationButton.classList.add('btn-success');
+                verificationButton.innerHTML = `<i class="bi bi-arrow-right-circle me-2"></i> Proceeding next....`; // This text is visible for 5s
+                verificationButton.disabled = true;
+                
+                if (progressBar) {
+                    progressBar.style.width = '100%';
+                    progressBar.classList.remove('bg-info');
+                    progressBar.classList.add('bg-success');
+                    progressBar.innerHTML = `Verification Successful!....`;
+                }
+                
+                if (verificationPromptAreaTop) {
+                    const topCardBody = verificationPromptAreaTop.querySelector('.card-body');
+                    if(topCardBody) {
+                        topCardBody.innerHTML = `<h5 class="card-title text-success fw-bold mb-1"><i class="bi bi-check-circle-fill me-2"></i> Human Verified!</h5>
+                                                 <p class="card-text small text-muted mb-0 fw-light">Human verification successful, proceeding next....</p>`;
+                    }
+                }
+                
+                // Enforce Minimum Total Wait Time (30 seconds)
+                verificationComplete = true;
+
+				// Turn OFF the scan and style the container as "Safe"
+		        const scanner = document.getElementById('scanner-overlay');
+		        if (scanner) scanner.classList.remove('active-scan');
+		        
+		        if (servicesPanel) {
+		            servicesPanel.classList.add('verified');
+		        }
+				
+                const elapsedInStage2 = Math.floor((Date.now() - stage2StartTime) / 1000);
+                const currentTotalElapsed = totalTimeElapsed + elapsedInStage2; // 10s from Stage 0
+                
+                // Calculate time needed to reach the NEW minimum of 30 seconds
+                const requiredAdditionalWait = Math.max(0, MINIMUM_TOTAL_WAIT - currentTotalElapsed); 
+                
+                if (stage3Timeout) clearTimeout(stage3Timeout); 
+                
+                // We add a 5-second UI/Scroll delay, and then the required additional wait.
+                const uiScrollDelay = 5000;
+                const newDelayMs = requiredAdditionalWait * 1000; 
+                
+                console.log(`Current Elapsed: ${currentTotalElapsed}s. Required Wait: ${requiredAdditionalWait}s. Advancing in ${newDelayMs / 1000}s.`);
+
+                // --- NEW LOGIC: Scroll to Top after 5 seconds ---
+                setTimeout(() => {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }, uiScrollDelay);
+
+                // Start Stage 3 after the combined delay
+                //stage3Timeout = setTimeout(stage3_Countdown, newDelayMs);
+
+				stage3Timeout = setTimeout(() => {
+                totalTimeElapsed = currentTotalElapsed + (newDelayMs/1000);
+                stage3_Countdown();
+            }, newDelayMs);
+				
+            }
+        };
+
+        if (verificationButton) {
+            verificationButton.addEventListener('click', handleInteraction);
+        }
+
+        // Timer for progress bar and max Stage 2 duration
+        const progressTimer = setInterval(() => {
+            const timePassed = Date.now() - stage2StartTime;
+            const percentage = Math.min(100, (timePassed / stageDuration) * 100);
+            const timeLeft = Math.max(0, (stageDuration/1000) - Math.floor(timePassed / 1000));
+            
+            if (progressBar && !verificationComplete) {
+                progressBar.style.width = percentage + '%';
+                progressBar.innerHTML = ` ${timeLeft}s Remaining`;
+            }
+            
+            if (timePassed >= (stageDuration * 1000) || verificationComplete) {
+            clearInterval(progressTimer);
+        }
+    }, 100);
+        
+        
+        // Advance to Stage 3 after 25 seconds if not already verified
+        // Auto-advance if no click
+	    stage3Timeout = setTimeout(() => {
+	        if (!verificationComplete) {
+	            totalTimeElapsed += stageDuration/1000; 
+	            stage3_Countdown();
+	        }
+	    }, stageDuration);
+    }
+
+	//------------------------------  STAGE 3  --------------------------
+
+    function stage3_Countdown() {
+		
+		if (timerNote) {
+            timerNote.style.opacity = '1';
+        }
+		
+        // Stage 3: Final Countdown (Now 25 seconds)
+        mainHeading.innerHTML = '🛡️ Request Forwarding in Process 🛡️';
+        updateDisplay('bi bi-arrow-clockwise', 'text-warning fw-light', true, // Spinning ON
+            `We are now ready to serve you! You will be automatically redirected to the official website shortly.
+            <br>If the automatic redirection fails, please use the button below.
+            <p class="mt-4">~We appreciate and thanks for your patience.</p>`);
+        
+        // CRITICAL CHANGE: Set totalTimeElapsed to 25. 
+        // This ensures the 60-second timer starts counting down from 25 (i.e., 25 seconds remaining).
+        //totalTimeElapsed = 25; 
+        
+        let remainingFinalTime = INITIAL_COUNT - totalTimeElapsed; // 60 - 35 = 25
+        setTimeDisplayMessage(remainingFinalTime, 'text-danger');
+
+        // Hide verification prompts
+        if (verificationPromptAreaTop) verificationPromptAreaTop.classList.add('d-none');
+        if (verificationPromptAreaBottom) {
+             verificationPromptAreaBottom.innerHTML = '';
+             verificationPromptAreaBottom.classList.add('d-none');
+        }
+        
+        if (servicesPanel) {
+            servicesPanel.style.opacity = '1';
+        }
+		
+		// Manual Redirect enabled after 20 seconds (Total 55s elapsed)
+        setTimeout(() => {
+            if (manualRedirectBtn) {
+                manualRedirectBtn.classList.remove('disabled', 'btn-outline-danger');
+                manualRedirectBtn.classList.add('btn-outline-warning');
+                manualRedirectBtn.href = REDIRECT_URL;
+                manualRedirectBtn.innerHTML = '<i class="bi bi-link-45deg me-2"></i> Manual Redirect (Ready)';
+            }
+        }, 20000);
+		
+        // Set up the final 25-second countdown timer
+        timerInterval = setInterval(() => {
+            totalTimeElapsed++;
+
+            let timeLeft = INITIAL_COUNT - totalTimeElapsed;
+
+
+			if (countdownCircle) {
+		        countdownCircle.innerText = Math.round(Math.max(0, timeLeft)); 
+		        // Correct way to force height with !important
+		        countdownCircle.style.setProperty('height', '75px', 'important');
+		        //countdownCircle.style.setProperty('width', '120px', 'important'); // Keep it a circle
+		    }
+			
+            if (timeLeftElement) timeLeftElement.innerText = 'in ' + Math.round(Math.max(0, timeLeft)) + ' seconds';
+
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                // Final UI update and automatic redirection 
+                if (countdownCircle) {
+                    countdownCircle.classList.remove('countdown-circle');
+                    countdownCircle.style.height = '50px';
+                    countdownCircle.innerHTML = '<i class="bi bi-arrow-right-circle-fill text-success"></i>';
+                }
+                if (timeLeftElement) timeLeftElement.innerText = "shortly";
+                if (manualRedirectBtn) {
+                    manualRedirectBtn.classList.remove('disabled', 'btn-outline-warning', 'btn-outline-danger');
+                    manualRedirectBtn.classList.add('btn-success');
+                    manualRedirectBtn.href = REDIRECT_URL;
+                    manualRedirectBtn.innerHTML = '<i class="bi bi-check-circle me-2"></i> Redirecting Now';
+                }
+
+                console.log(`Redirecting to ${REDIRECT_URL}`);
+                window.location.href = REDIRECT_URL;
+            }
+        }, 1000);
+
+		// Turn OFF the scan and style the container as "Safe"
+		const scanner = document.getElementById('scanner-overlay');
+		if (scanner) scanner.classList.remove('active-scan');
+		
+		if (servicesPanel) {
+			servicesPanel.classList.add('verified');
+		}
+    }
+
+    // Start the process when the page loads
+    startWakeupProcess();
+
+
+</script>
+
+  
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

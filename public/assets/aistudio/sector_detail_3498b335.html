@@ -1,0 +1,106 @@
+{% extends 'sector_base.html' %}
+	{% block sector_content %}
+		<div class="sector-container mt-1 mb-3">
+			<h2 class="text-body text-center m-3" style="font-family:none;">{{ sector.name|upper }}</h2>
+			<div class="small text-body text-center fs-6" style="font-family:cursive;" id="tagline-motto-sector"><span id="animated-text-sector"></span></div>
+		</div>
+		<hr>
+		{% block sector_detail_content %}{% endblock %}
+		<hr>
+		{% if sector.description %}
+			<p class="my-2">{{ sector.description }}</p>
+		{% endif %}
+		
+		{% if jobs %}
+		<section id="featured-jobs" class="mt-0">
+		  <div class="d-flex justify-content-between align-items-center">
+			  <h2 class="text-body my-5">Featured Jobs 💼</h2>
+			  {% if (jobs|length)>3 %}
+				 <a href="{{ url_for('public.sector_jobs', slug=sector.slug) }}" class="text-decoration-none">
+				  <b class="btn btn-outline-primary btn-sm rounded-2">View All</b>
+				</a>
+			  {% endif %}
+		  </div>
+		    <div class="row">
+				{% for j in jobs[:3] %}
+					<div class="col-md-4 mb-3">
+						<div class="card h-100 shadow-sm bg-body">
+							<div class="card-body d-flex flex-column"> 
+								<h5 class="card-title ">{{ j.title }}</h5>
+								<h6 class="card-subtitle mb-2 text-muted">{{ j.company }}</h6>
+								<p class="card-text small">{{ j.description[:50] }}....</p>
+								
+								<div class="d-flex justify-content-between align-items-center mt-3 mt-auto pt-2 border-top"> 
+									
+									<a href="{{ url_for('public.job_detail', job_id=j.id) }}" class="card-link p-0 text-decoration-none">Details</a>
+									
+									<div>
+										{% if j.is_active %}
+											{% if current_user.is_authenticated%}
+												<form method="post" action="{{ url_for('jobseeker.apply_job', job_id=j.id) }}" class="d-inline"">
+													<button type="submit" class="card-link btn btn-primary px-4">Apply</button>
+												</form>
+											{% else %}
+												<form action="{{ url_for('auth.login') }}" class="d-inline"">
+													<button type="submit" class="card-link btn btn-primary px-4">Apply Now</button>
+												</form>
+											{% endif %}
+										{% else %}
+											<span class="badge bg-secondary">Closed</span>
+										{% endif %}
+									</div>
+									
+								</div>
+								
+							</div>
+						</div>
+					</div>
+				{% endfor %}
+			</div>
+		<hr>
+		</section>
+		{% endif %}
+		<section id="contact" class="mb-5">
+			<div class="d-flex justify-content-between align-items-center pb-3 border-bottom">
+			  <h2 class="text-body fw-bold my-5">Contact Us ✍️</h2>
+			</div>
+		  <form method="post" action="{{ url_for('public.contact') }}">
+			<div class="row">
+			  <div class="col-md-6 mb-2"><input required name="name" class="form-control" pattern="^[a-zA-Z\s]+$" title="Only letters (A-Z) and spaces are allowed." placeholder="Your name"></div>
+			  <div class="col-md-6 mb-2"><input required name="email" class="form-control" placeholder="Your email"></div>
+			  <div class="col-md-6 mb-2">
+				<select required name="sector" class="form-select">
+				  <option value="">Select sector</option>
+				  {% for s in sectors %}<option value="{{ s.id }}">{{ s.name }}</option>{% endfor %}
+				</select>
+			  </div>
+			  <div class="col-md-6 mb-2"><input name="phone" class="form-control" pattern="[0-9]{10}" placeholder="Your Phone" title="Only 10digit phone number are allowed." required></div>
+			  <div class="col-md-8 mb-2"><input required name="subject" class="form-control" placeholder="Subject"></div>
+			  <div class="col-md-4 mb-2">
+					<div class="input-group">
+						<span class="input-group-text bg-warning fw-bold fs-5 text-black text-decoration-line-through" id="captcha-display">{{ captcha_text }}</span>
+						<button type="button" id="refresh-captcha-btn" class="px-2 fw-bold p-0 m-0" style="border:0; font-size:x-large;">⟳</button>
+						<input name="captcha" type="text" class="form-control" placeholder="Enter code above" required>
+					</div>
+			  </div>
+			  <div class="col-md-12 mb-3"><textarea required name="message" class="form-control" placeholder="Your message" rows="4"></textarea></div>
+			</div>
+			<div class="d-grid"><button class="btn btn-primary btn-lg">Send Message</button></div>
+		  </form>
+		</section>
+	<script>
+    (function() {
+        // Variables and functions inside here are not global
+        const texts = ["{{ sector.motto }}", " ॐ "];
+        let i = 0;
+
+        function cycleText() {
+            document.getElementById("animated-text-sector").innerText = texts[i];
+            i = (i + 1) % texts.length;
+        }
+
+        cycleText();
+        setInterval(cycleText, 1000);
+    })();
+</script>
+	{% endblock %}

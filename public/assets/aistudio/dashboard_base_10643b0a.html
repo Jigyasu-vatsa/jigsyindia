@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% import 'macros/format_utc_to_ist.html' as f_to_ist %}
+{% block content %}
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	
+    <div class="d-flex flex-row justify-content-between text-body">
+        <!--a class="btn btn-sm btn-outline-secondary me-2 my-2 text-body" href="{{ url_for(current_user.role + '.dashboard') }}">Dashboard</a-->
+		<a class="btn btn-sm btn-outline-secondary me-2 my-2 text-body noNavBelow250px" href="{{ url_for(current_user.role + '.dashboard') }}">Welcome, {{ current_user.name }}!</a>
+        
+        {% if user_notifications %}
+            <div class="dropdown me-2 my-2">
+                <button class="btn btn-sm btn-outline-secondary dropdown-toggle text-body noNavBelow250px" data-bs-toggle="dropdown">Notifications <span class="badge bg-danger">{{ user_notifications|length }}</span></button>
+                <ul class="dropdown-menu dropdown-menu-end text-body">
+					{% for n in user_notifications %}
+						<li><a class="dropdown-item" href="{{ url_for('user.notifications') }}#{{ n.id }}">{{ n.title }}<br><small class="text-muted">{{ (n.created_at|to_ist).strftime('%Y-%m-%d %H:%M %Z') }}</small></a></li>
+					{% endfor %}
+					<li><hr class="dropdown-divider"></li>
+					<li><a class="dropdown-item" href="{{ url_for('user.notifications') }}">View all</a></li>
+				</ul>
+            </div>
+        {% endif %}
+    </div>
+	
+    {% block dashboard_content %}{% endblock %}
+	
+{% endblock %}

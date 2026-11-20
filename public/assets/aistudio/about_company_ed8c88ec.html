@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+	{% block content %}
+		<div class="container py-5">
+			<header class="text-center mb-5">
+				<h1 class="display-5 fw-bold text-primary mb-1">JIGSY INDIA</h1>
+				<h2 class="h5 text-muted mb-4">JIGYASU INTEGRATED GLOBAL SERVICES PRIVATE LIMITED</h2>
+				
+				<div class="row align-items-center justify-content-center border-top border-bottom py-3 px-0 mb-5 rounded text-body mx-0">
+					<div class="col-md-4 text-center text-md-start mb-2 mb-md-0">
+						<p class="mb-0 small text-uppercase fw-semibold">CIN: U62099BR2025PTC078592</p>
+					</div>
+					<div class="col-md-8 text-center text-md-end">
+						<p class="mb-0 fst-italic text-success">
+							<span class="fw-bold">Moto:</span> JIGYASU INTEGRATED GLOBAL SERVICES with YOU
+							<span class="mx-2 text-muted">|</span> 
+							<span class="fw-bold">Tagline:</span> जिज्ञासु ईक्षण ग्रंथि समृद्धि युक्ति
+						</p>
+					</div>
+				</div>
+			</header>
+
+			<div class="row gx-lg-5 align-items-center text-body">
+				<div class="col-lg-7 px-5">
+					<h2 class="text-body fw-bold my-5">Our Story & Mission</h2>
+					<p class="lead" style="text-align:justify;">
+						JIGYASU INTEGRATED GLOBAL SERVICES PRIVATE LIMITED, or JIGSY INDIA, is a leading provider of innovative and comprehensive solutions across multiple sectors. Our core mission is to empower individuals and organizations through cutting-edge technology, skill development, and professional services. We are dedicated to delivering excellence and fostering a connected, skilled, and prosperous global community.
+					</p>
+					
+					<p class="text-muted mt-4" style="text-align:justify;">
+						The vision for this company was initially conceived on October 3rd, 2010. In honor of that significant day, the founder officially declared it the first foundation day for work commencement and engagement in the year 2025.
+					</p>
+
+					<h3 class=" mt-5 mb-3 fw-bold my-5">Our Vision</h3>
+					<ul class="list-styled" style="text-align:justify;">
+						<li class="mb-2">
+							<i class="bi bi-check-circle-fill text-success me-2"></i> To be a global leader in integrated services, transforming industries and unlocking human potential through curiosity, wisdom, and professional excellence.
+						</li>
+						<li class="mb-2">
+							<i class="bi bi-check-circle-fill text-success me-2"></i> Achieve global acceptance through the joint contribution of our team, empowering quick and effective market adaptations.
+						</li>
+						<li class="mb-2">
+							<i class="bi bi-check-circle-fill text-success me-2"></i> Focus on nurturing upcoming generations with innovative, future-ready technologies for a smart, modernized era.
+						</li>
+					</ul>
+				</div>
+				
+				<div class="col-lg-5 mt-4 mt-lg-0">
+					<div class="card border-0 shadow-lg rounded-0 overflow-hidden p-0">
+						<img src="{{ url_for('static', filename='img/company_building.jpg') }}" class="card-img-top borderanimate" 
+							style="height: 400px; width: 100%; object-fit: cover;" 
+							alt="JIGSY Company Building - Representing our professional foundation">
+					</div>
+					<div class="text-center mt-3">
+						<p class="small text-muted fst-italic">Establishing a Foundation for Global Services</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	{% endblock %}

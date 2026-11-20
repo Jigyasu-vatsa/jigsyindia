@@ -1,0 +1,335 @@
+@import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 150px;
+  }
+  body {
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  }
+  h1, h2, h3, h4, .brand-font {
+    font-family: 'Outfit', 'Plus Jakarta Sans', sans-serif;
+  }
+}
+
+/* Interactive Subtle Corporate Ambient Background */
+.jigsy-cursor-spotlight {
+  --mx: 50%;
+  --my: 30%;
+  background: radial-gradient(
+    520px circle at var(--mx) var(--my),
+    rgba(37, 99, 235, 0.085),
+    rgba(245, 158, 11, 0.04) 38%,
+    transparent 72%
+  );
+}
+
+.dark .jigsy-cursor-spotlight {
+  background: radial-gradient(
+    560px circle at var(--mx) var(--my),
+    rgba(59, 130, 246, 0.14),
+    rgba(245, 158, 11, 0.06) 40%,
+    transparent 74%
+  );
+}
+
+.jigsy-ambient-bg {
+  position: relative;
+  background-image:
+    radial-gradient(circle at 12% 14%, rgba(37, 99, 235, 0.07), transparent 34%),
+    radial-gradient(circle at 88% 18%, rgba(217, 119, 6, 0.06), transparent 32%),
+    radial-gradient(circle at 52% 86%, rgba(16, 185, 129, 0.05), transparent 38%),
+    linear-gradient(to right, rgba(148, 163, 184, 0.08) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(148, 163, 184, 0.08) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 100% 100%, 44px 44px, 44px 44px;
+}
+
+.dark .jigsy-ambient-bg {
+  background-image:
+    radial-gradient(circle at 14% 12%, rgba(59, 130, 246, 0.13), transparent 36%),
+    radial-gradient(circle at 86% 20%, rgba(245, 158, 11, 0.09), transparent 34%),
+    radial-gradient(circle at 50% 85%, rgba(16, 185, 129, 0.08), transparent 38%),
+    linear-gradient(to right, rgba(148, 163, 184, 0.055) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(148, 163, 184, 0.055) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 100% 100%, 44px 44px, 44px 44px;
+}
+
+/* Trendy Animated Gradient Border Card on Hover */
+@keyframes borderFlow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.jigsy-border-card {
+  position: relative;
+  z-index: 0;
+  transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.28s ease;
+}
+
+.jigsy-border-card::before {
+  content: '';
+  position: absolute;
+  inset: -1.5px;
+  border-radius: inherit;
+  padding: 1.5px;
+  background: linear-gradient(125deg, #2563eb, #06b6d4, #f59e0b, #10b981, #2563eb);
+  background-size: 260% 260%;
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.jigsy-border-card:hover,
+.jigsy-border-card:focus-within {
+  transform: translateY(-4px);
+}
+
+.jigsy-border-card:hover::before,
+.jigsy-border-card:focus-within::before {
+  opacity: 1;
+  animation: borderFlow 3.4s linear infinite;
+}
+
+/* Subtle Entrance & Assistant Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.24s ease-out both;
+}
+
+@keyframes attractFloat {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-5px) scale(1.03); }
+}
+
+.animate-attract-3x {
+  animation: attractFloat 1.5s ease-in-out 3;
+}
+
+@keyframes popLarger {
+  0% { opacity: 0; transform: scale(0.92) translateY(10px); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.animate-pop-larger {
+  animation: popLarger 0.28s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes voicePulseRing {
+  0% { transform: scale(0.95); opacity: 0.7; }
+  70% { transform: scale(1.24); opacity: 0; }
+  100% { transform: scale(1.24); opacity: 0; }
+}
+
+.animate-voice-ring {
+  animation: voicePulseRing 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .jigsy-border-card,
+  .jigsy-border-card::before,
+  .animate-marquee,
+  .animate-attract-3x,
+  .animate-pop-larger,
+  .animate-voice-ring {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* Print Specific Rules for Formal Receipts, Offer Letters & Landscape Certificates */
+@media print {
+  @page {
+    margin: 0;
+  }
+  @page portrait {
+    size: A4 portrait;
+    margin: 6mm 8mm;
+  }
+  @page landscape {
+    size: A4 landscape;
+    margin: 0;
+  }
+  .print-landscape {
+    page: landscape !important;
+  }
+  *, *::before, *::after {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+  html, body {
+    background: #ffffff !important;
+    color: #0f172a !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  .no-print,
+  .no-print * {
+    display: none !important;
+    visibility: hidden !important;
+  }
+  .print-modal-container {
+    position: static !important;
+    background: transparent !important;
+    backdrop-filter: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    display: block !important;
+  }
+  .print-wrapper {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  .print-section {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+    background: #ffffff !important;
+    color: #0f172a !important;
+  }
+}
+
+.signature-font {
+  font-family: 'Playfair Display', 'Brush Script MT', cursive, Georgia, serif;
+}
+
+/* Continuous Marquee Animation */
+@keyframes marquee {
+  0% { transform: translateX(100%); }
+  100% { transform: translateX(-100%); }
+}
+
+.animate-marquee {
+  display: inline-block;
+  white-space: nowrap;
+  animation: marquee 30s linear infinite;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+/* Smooth, Anti-Aliased Image Rendering Across All Sizes */
+img,
+.jigsy-crisp-img {
+  image-rendering: auto;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+
+/* ========================================================================= */
+/* 15-Second Anti-DoS & Anti-Bot Security Gate Animations                    */
+/* ========================================================================= */
+@keyframes jigsy-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes jigsy-glow-cycle {
+  0% {
+    box-shadow: 0 0 18px rgba(0, 210, 255, 0.45);
+    filter: hue-rotate(0deg);
+  }
+  100% {
+    box-shadow: 0 0 18px rgba(0, 210, 255, 0.45);
+    filter: hue-rotate(360deg);
+  }
+}
+
+@keyframes jigsy-pulse-bg {
+  0%, 100% { opacity: 0.35; transform: scale(1); }
+  50% { opacity: 0.8; transform: scale(1.06); }
+}
+
+@keyframes jigsy-scan-move {
+  0% { top: 0%; }
+  50% { top: calc(100% - 4px); }
+  100% { top: 0%; }
+}
+
+.jigsy-countdown-circle {
+  width: 128px;
+  height: 128px;
+  border: 9px solid currentColor;
+  border-top-color: transparent !important;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: jigsy-spin 1s linear infinite, jigsy-glow-cycle 3s linear infinite;
+  background: radial-gradient(circle, rgba(0, 210, 255, 0.08) 0%, transparent 72%);
+  transition: all 0.35s ease;
+}
+
+.jigsy-countdown-upright {
+  animation: jigsy-spin 1s linear infinite reverse;
+}
+
+.jigsy-futuristic-pulse {
+  background: radial-gradient(circle, rgba(0, 210, 255, 0.14) 0%, rgba(0, 210, 255, 0) 70%);
+  animation: jigsy-pulse-bg 3.5s ease-in-out infinite;
+}
+
+.jigsy-scanning-container {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(0, 210, 255, 0.32);
+  transition: border-color 0.4s ease, box-shadow 0.4s ease, opacity 0.4s ease;
+}
+
+.jigsy-scanning-container.verified {
+  border-color: #10b981;
+  box-shadow: inset 0 0 24px rgba(16, 185, 129, 0.16), 0 0 0 1px rgba(16, 185, 129, 0.35);
+}
+
+.jigsy-scanner-line {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(to right, transparent, #00d2ff, #00ff88, #00d2ff, transparent);
+  box-shadow: 0 0 16px 2px rgba(0, 210, 255, 0.75);
+  z-index: 20;
+  pointer-events: none;
+  opacity: 0;
+}
+
+.jigsy-scanner-line.active-scan {
+  opacity: 1;
+  animation: jigsy-scan-move 2.4s ease-in-out infinite;
+}
+
+/* Custom subtle scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.4);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(100, 116, 139, 0.6);
+}

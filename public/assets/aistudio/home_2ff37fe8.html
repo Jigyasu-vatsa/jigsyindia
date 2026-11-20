@@ -1,0 +1,683 @@
+{% extends "base.html" %}
+{% block content %}
+<style>
+.service-card-hover {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.service-card-hover:hover {
+    transform: translateY(-5px); /* Lifts the card slightly */
+    /* REMOVED: background-color:#b97171; */
+    box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175) !important; /* Stronger shadow on hover */
+	background-color:#b97171;
+}
+
+/* Custom CSS for Bootstrap Icon spinner (replaces Font Awesome 'fa-spinner') */
+.spin-slow {
+    animation: spin 2s linear infinite;
+}
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+</style>
+{# CRITICAL FIX: FESTIVE RIBBON SECTION #}
+
+{# END RIBBON SECTION #}
+<section class="hero" style="margin-bottom:7%;">
+  <div class="container p-0">
+    
+    <div class="hero-content-wrapper p-0 pt-1">
+      <section class="ribbon-container bg-primary text-white py-0 px-3 text-center m-0 borderanimate fontSizeBelow500px" 
+				 style="margin-top:0; border-radius:15px; --transition-speed: 22s; ">
+			<h6 class="mb-0 fw-semibold d-flex align-items-center justify-content-center announcementHeight" style="font-family:cursive; font-size:smaller;" id="tagline-announce">
+			<span id="animated-text-annimate">
+				{# Announcements Below #}
+			</span>	
+				<!--small class="opacity-75">(Happy Diwali to all our partners and users)</small-->
+			</h6>
+		</section>
+		
+      <div class="row align-items-center mt-0 g-0 p-0 py-md-5 ps-md-5">
+    
+		{# Left Column: Text and Buttons (Content Block) #}
+		<div class="col-12 col-md-6 py-5 px-4 offset-md-0 order-2 order-md-1">
+			
+			{# Text Container: Centered on mobile, Left-aligned on desktop #}
+			<div class="text-center text-md-start">
+				
+				<h1 class="display-5 display-md-4 fw-bolder text-body mt-0 mb-4">We are dedicated<br> to contribute <br>globally</h1>
+				
+				<p class="lead text-muted my-4 fs-5 fs-md-3"> by empowering youth with innovating technology for a smart future.</p>
+				
+			</div>
+			
+			{# Button Group: Centered on mobile, Left-aligned on desktop #}
+			<div class="d-flex flex-column flex-sm-row pt-2 h-100 justify-content-center justify-content-md-start">
+				
+				{# Primary Button: Now taking full-width on small mobile, centering it perfectly #}
+				<a href="{{ url_for('auth.register') }}" class="btn btn-primary btn-lg rounded-1 me-sm-3 mb-2 mb-sm-0 w-100 w-sm-auto">
+					Join Us Today
+				</a>
+				
+				{# Secondary Button: Now taking full-width on small mobile #}
+				<a href="#featured-jobs" class="btn btn-outline-secondary btn-lg rounded-1 w-100 w-sm-auto">
+					Explore Careers
+				</a>
+			</div>
+		</div>
+		{# Right Column: Image #}
+		{# Ensure full width (col-12) and centered positioning on mobile #}
+		
+		<div class="col-12 col-md-5 d-flex justify-content-center justify-content-md-end bg-body order-1 order-md-2 offset-md-1 pt-1 pt-md-0">
+
+		<div id="heroVideoCarousel" class="carousel slide hero-carousel-wrapper px-0 px-md-1 pb-md-5 borderanimate homeSlideshowCarousel rounded-2" data-bs-ride="carousel" style="height:505px; width:480px; margin-right:-7px;">
+			
+			<div class="carousel-indicators">
+				<button type="button" data-bs-target="#heroVideoCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Video Slide 1"></button>
+				<button type="button" data-bs-target="#heroVideoCarousel" data-bs-slide-to="1" aria-label="Video Slide 2"></button>
+				<button type="button" data-bs-target="#heroVideoCarousel" data-bs-slide-to="2" aria-label="Video Slide 3"></button>
+			</div>
+
+			<div class="carousel-inner ">
+				
+				
+				<div class="carousel-item active"> 
+				<div class="video-wrapper"> <video class="d-block w-100 hero-video"
+						  autoplay
+						  loop
+						  playsinline
+						  style="height:500px; object-fit: cover"
+						  poster="{{ url_for('static', filename='img/WeAreHiringJigsy.jpg') }}"
+						  muted> 
+						  <source src="{{ url_for('static', filename='videos/hero_video_1.mp4') }}" type="video/mp4">
+					</video>
+				 </div>   
+					<div class="btn btn-sm btn-light position-absolute bottom-0 end-0 m-3 volume-toggle" data-bs-no-touch="true">
+						<i class="bi bi-volume-mute-fill" data-state="muted"></i> 
+					</div>
+					
+					<div class="carousel-caption d-none d-md-block text-white bg-dark bg-opacity-50 p-2 rounded">
+						<h5>Future of Tech</h5>
+						<p>Building a smarter tomorrow with innovative technology.</p>
+					</div>
+				</div>
+				
+				<div class="carousel-item"> 
+				<div class="video-wrapper"><video class="d-block w-80 hero-video"
+						  autoplay
+						  loop
+						  playsinline
+						  style="height:500px; object-fit: cover;"
+						  poster="{{ url_for('static', filename='img/GrowWithJIGSY.jpg') }}"
+						  muted> 
+						  <source src="{{ url_for('static', filename='videos/hero_video_2.mp4') }}" type="video/mp4">
+					</video>
+				</div>    
+					<div class="btn btn-sm btn-light position-absolute bottom-0 end-0 m-3 volume-toggle" data-bs-no-touch="true">
+						<i class="bi bi-volume-mute-fill" data-state="muted"></i> 
+					</div>
+					
+					<div class="carousel-caption d-none d-md-block text-white bg-dark bg-opacity-50 p-2 rounded">
+						<h5>Global Contribution</h5>
+						<p>Empowering youth across the world.</p>
+					</div>
+				</div>
+
+				<div class="carousel-item"> 
+				<div class="video-wrapper"><video class="d-block w-100 hero-video"
+						  autoplay
+						  loop
+						  playsinline
+						  style="height:500px; object-fit: cover;"
+						  poster="{{ url_for('static', filename='img/JoinOurTeamJigsy.jpg') }}"
+						  muted> 
+						  <source src="{{ url_for('static', filename='videos/video_thumbnail.mp4') }}" type="video/mp4">
+					</video>
+				</div>    
+					<div class="btn btn-sm btn-light position-absolute bottom-0 end-0 m-3 volume-toggle" data-bs-no-touch="true">
+						<i class="bi bi-volume-mute-fill" data-state="muted"></i> 
+					</div>
+					<div class="carousel-caption d-none d-md-block text-white bg-dark bg-opacity-50 p-2 rounded">
+						<h5>Introducing JIGSY</h5>
+						<p>Jigyasu Integrated Global Services with You</p>
+					</div>
+				</div>
+				
+			</div>
+
+			<button class="carousel-control-prev" type="button" data-bs-target="#heroVideoCarousel" data-bs-slide="prev">
+				<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+				<span class="visually-hidden">Previous</span>
+			</button>
+			<button class="carousel-control-next" type="button" data-bs-target="#heroVideoCarousel" data-bs-slide="next">
+				<span class="carousel-control-next-icon" aria-hidden="true"></span>
+				<span class="visually-hidden">Next</span>
+			</button>
+
+		</div>
+
+	</div>
+
+      
+    </div>
+  </div>
+  </div>
+</section>
+
+
+<h2 class="my-5 text-center fw-bold">Our Featured Services Across All Sectors 💡</h2>
+<p class="lead text-center text-muted mb-5">Unifying technical expertise with career development and essential business advisory.</p>
+
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mb-5">
+    
+    {# --- TECH FOCUS: Card 1 - SaaS and Web Project (Color: Primary) --- #}
+    <div class="col">
+        <div class="card h-100 p-3 shadow-sm border-0 border-top border-4 border-primary service-card-hover">
+            <div class="card-body">
+                <div class="d-flex align-items-center mb-3">
+                    <i class="bi bi-cloud-fill fs-3 text-primary me-3"></i>
+                    <h5 class="card-title mb-0 fw-bold">SaaS & Web Project Development</h5>
+                </div>
+                <p class="card-text text-muted small">Building custom web applications, full-stack software, and scalable SaaS platforms for businesses worldwide.</p>
+            </div>
+            <div class="card-footer bg-white border-0 pt-0">
+                <a href="{{ url_for('public.sector_detail', slug='tech') }}" class="btn btn-sm btn-link p-0 text-primary">Explore Tech Solutions &rarr;</a>
+            </div>
+        </div>
+    </div>
+
+    {# --- TECH FOCUS: Card 2 - Database Design and Management (Color: Success) --- #}
+    <div class="col">
+        <div class="card h-100 p-3 shadow-sm border-0 border-top border-4 border-success service-card-hover">
+            <div class="card-body">
+                <div class="d-flex align-items-center mb-3">
+                    <i class="bi bi-database-fill-check fs-3 text-success me-3"></i>
+                    <h5 class="card-title mb-0 fw-bold">Database Design & Management</h5>
+                </div>
+                <p class="card-text text-muted small">Designing secure, high-performance databases and providing expert data management and optimization services.</p>
+            </div>
+            <div class="card-footer bg-white border-0 pt-0">
+                <a href="{{ url_for('public.sector_detail', slug='tech') }}" class="btn btn-sm btn-link p-0 text-success">View Data Services &rarr;</a>
+            </div>
+        </div>
+    </div>
+    
+    {# --- TECH FOCUS: Card 3 - IT Infrastructure and Support (Color: Info) --- #}
+    <div class="col">
+        <div class="card h-100 p-3 shadow-sm border-0 border-top border-4 border-info service-card-hover">
+            <div class="card-body">
+                <div class="d-flex align-items-center mb-3">
+                    <i class="bi bi-gear-fill fs-3 text-info me-3"></i>
+                    <h5 class="card-title mb-0 fw-bold">IT Infrastructure & Support</h5>
+                </div>
+                <p class="card-text text-muted small">Cloud setup, network management, security auditing, and dedicated technical support for robust operations.</p>
+            </div>
+            <div class="card-footer bg-white border-0 pt-0">
+                <a href="{{ url_for('public.sector_detail', slug='tech') }}" class="btn btn-sm btn-link p-0 text-info">Get IT Support &rarr;</a>
+            </div>
+        </div>
+    </div>
+    
+    {# --- NON-TECH FOCUS: Card 4 - Skill & Industrial Exposure (Color: Warning) --- #}
+    <div class="col">
+        <div class="card h-100 p-3 shadow-sm border-0 border-top border-4 border-warning service-card-hover">
+            <div class="card-body">
+                <div class="d-flex align-items-center mb-3">
+                    <i class="bi bi-tools fs-3 text-warning me-3"></i>
+                    <h5 class="card-title mb-0 fw-bold">Skill & Industrial Exposure</h5>
+                </div>
+                <p class="card-text text-muted small">Hands-on skill development programs and industrial mentorship to bridge the gap between education and work.</p>
+            </div>
+            <div class="card-footer bg-white border-0 pt-0">
+                <a href="{{ url_for('public.sector_detail', slug='youth') }}" class="btn btn-sm btn-link p-0 text-warning">Explore Youth Programs &rarr;</a>
+            </div>
+        </div>
+    </div>
+
+    {# --- NON-TECH FOCUS: Card 5 - Internship Training & Certifications (Color: Danger) --- #}
+    <div class="col">
+        <div class="card h-100 p-3 shadow-sm border-0 border-top border-4 border-danger service-card-hover">
+            <div class="card-body">
+                <div class="d-flex align-items-center mb-3">
+                    <i class="bi bi-briefcase-fill fs-3 text-danger me-3"></i>
+                    <h5 class="card-title mb-0 fw-bold">Internship & Certification Tracks</h5>
+                </div>
+                <p class="card-text text-muted small">Structured internship experience combined with certified training programs to build a strong professional portfolio.</p>
+            </div>
+            <div class="card-footer bg-white border-0 pt-0">
+                <a href="{{ url_for('public.sector_detail', slug='edutech') }}" class="btn btn-sm btn-link p-0 text-danger">Apply for Internships &rarr;</a>
+            </div>
+        </div>
+    </div>
+    
+    {# --- NON-TECH FOCUS: Card 6 - Digital & Legal Consultancy (Color: Secondary) --- #}
+    <div class="col">
+        <div class="card h-100 p-3 shadow-sm border-0 border-top border-4 border-secondary service-card-hover">
+            <div class="card-body">
+                <div class="d-flex align-items-center mb-3">
+                    <i class="bi bi-gavel fs-3 text-secondary me-3"></i>
+                    <h5 class="card-title mb-0 fw-bold">Digital & Legal Consultancy</h5>
+                </div>
+                <p class="card-text text-muted small">Essential services covering digital marketing strategy, GST/DSC compliance, and company registration.</p>
+            </div>
+            <div class="card-footer bg-white border-0 pt-0">
+                <a href="{{ url_for('public.sector_detail', slug='consult') }}" class="btn btn-sm btn-link p-0 text-secondary">Get Business Advisory &rarr;</a>
+            </div>
+        </div>
+    </div>
+    
+</div>
+
+
+<section class="py-5">
+    <div class="container p-0">
+
+        <div class="d-flex justify-content-between align-items-center pb-3 mb-4 border-bottom">
+		  <h2 class="text-body fw-bold mb-0">Our Key Sectors 🏢</h2>
+		  {% if (sectors|length)>1 %}
+			<a href="{{ url_for('public.jobs') }}" class="text-decoration-none">
+			  <b class="btn btn-outline-primary btn-sm rounded-2">View All</b>
+			</a>
+		  {% endif %}
+		</div>
+        <div class="swiper pt-1" id="sectorsSwiper">
+            
+            <div class="swiper-wrapper">
+                
+                {% for s in sectors %}
+                    <div class="swiper-slide">
+                        
+                        {# Card content (no row/col wrappers needed inside slide) #}
+                        <div class="card bg-body h-100 border rounded-2 professional-card shadow-sm">
+                            <img 
+                                src="{{ url_for('static', filename=s.logo or 'img/sectors/comingsoon.png') }}" 
+                                class="card-img-top rounded-5"
+                                alt="{{ s.name }} Sector Image"
+                                style="height: 200px; object-fit: fill; border-bottom: 1px solid #dee2e6;"
+                            >
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title fw-semibold text-truncate">{{ s.name }}</h5>
+                                <p class="card-text text-muted mb-4 small">{{ s.motto }}</p>
+                                <div class="mt-auto">
+                                    <a href="{{ url_for('public.sector_detail', slug=s.slug) }}" class="btn btn-outline-primary btn-sm rounded-0 w-100">Explore</a>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                {% endfor %}
+
+            </div>
+            
+            <div class="swiper-button-prev custom-swiper-prev"></div>
+            <div class="swiper-button-next custom-swiper-next"></div>
+
+            <div class="swiper-pagination"></div>
+
+        </div>
+    </div>
+</section>
+
+
+<section class="py-5">
+    <div class="container p-0">
+        <div class="d-flex justify-content-between align-items-center pb-3 mb-4 border-bottom">
+            <h2 class="text-body fw-bold mb-0">Job Opportunities 💼</h2>
+            {% if (jobs|length) > 1 %}
+                <a href="{{ url_for('public.jobs') }}" class="text-decoration-none">
+                    <b class="btn btn-outline-primary btn-sm rounded-2">View All</b>
+                </a>
+            {% endif %}
+        </div>
+
+        <div class="swiper pt-1" id="jobsSwiper">
+            
+            <div class="swiper-wrapper">
+				{% for j in jobs %}
+                    <div class="swiper-slide">
+
+                        <div class="card bg-body h-100 border rounded-5 professional-card shadow-sm">
+                            <div class="card-body d-flex flex-column">
+                                <div class="card-body d-flex flex-column"> 
+                                    <h5 class="card-title ">{{ j.title }}</h5>
+                                    <h6 class="card-subtitle mb-2 text-muted">{{ j.company }}</h6>
+                                    <p class="card-text small">{{ j.description[:50] }}....</p>
+                                    
+                                    <div class="d-flex justify-content-between align-items-center mt-3 mt-auto pt-2 border-top"> 
+                                        
+                                        <a href="{{ url_for('public.job_detail', job_id=j.id) }}" class="card-link p-0 text-decoration-none">Details</a>
+                                        
+                                        <div>
+                                            {% if j.is_active %}
+                                                {% if current_user.is_authenticated%}
+                                                    <form method="post" action="{{ url_for('jobseeker.apply_job', job_id=j.id) }}" class="d-inline"">
+                                                        <button type="submit" class="card-link btn btn-primary px-4">Apply</button>
+                                                    </form>
+                                                {% else %}
+                                                    <form action="{{ url_for('auth.login') }}" class="d-inline"">
+                                                        <button type="submit" class="card-link btn btn-primary px-4">Apply Now</button>
+                                                    </form>
+                                                {% endif %}
+                                            {% else %}
+                                                <span class="badge bg-secondary">Closed</span>
+                                            {% endif %}
+                                        </div>
+                                        
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+					</div>
+				{% endfor %}
+			</div>
+			<div class="swiper-button-prev custom-swiper-prev"></div>
+			<div class="swiper-button-next custom-swiper-next"></div>
+
+			<div class="swiper-pagination"></div>
+
+		</div>
+
+    </div>
+</section>
+
+
+
+
+<section id="submit-review" class="my-5 bg-body px-4 py-1 pb-5 rounded-5 shadow-sm">
+
+	{% if reviews %}
+	<section class="my-1">
+		<div class="d-flex justify-content-between align-items-center p-2 mb-4 border-bottom">
+            <h2 class="text-body fw-bold mb-0">Users Testimonials 💭</h2>
+        </div>
+
+        <div class="swiper" id="reviewsSwiper">
+            
+            <div class="swiper-wrapper">
+
+				{% for r in reviews %}
+					<div class="swiper-slide pt-1">
+
+						<div class="card  h-100 border rounded-0 p-4 shadow-sm text-center">
+                            <div class="d-flex align-items-center justify-content-center mb-1">
+                                
+                                <div>
+									<i class="bi bi-person-circle fs-2 text-primary"></i>
+                                    <h6 class="my-1 fw-semibold">{{ r.name }}</h6>
+                           
+									<p class="text-warning">{{ '★' * r.rating }}{{ '☆' * (5 - r.rating) }}</p>
+									
+								</div>
+                            </div>
+                            <p class="card-text fst-italic">"{{r.comment|truncate(120) }}"</p>
+                        </div>
+					</div>
+                {% endfor %}
+
+            </div>
+            
+            <div class="swiper-button-prev custom-swiper-prev"></div>
+            <div class="swiper-button-next custom-swiper-next"></div>
+
+            <div class="swiper-pagination"></div>
+
+		</div>
+	</section>
+
+	{% endif %}
+
+
+    {# --- REST OF YOUR SHARE YOUR EXPERIENCE FORM FOLLOWS --- #}
+    <div class="d-flex mt-5 justify-content-between align-items-center pb-3 mb-4 border-bottom">
+        <h4 class="text-body fw-bold mb-0">Share Your Experience <i class="bi bi-chat-text-fill fs-3 text-secondary me-3"></i></h4>
+    </div>
+    <form method="post" action="{{ url_for('public.submit_review') }}" id="reviewForm">
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="reviewName" class="form-label">Your Name</label>
+                <input required name="name" id="reviewName" class="form-control" placeholder="e.g., Jigyasu Vatsa" value="{% if current_user.is_authenticated %}{{ current_user.name }}{% endif %}">
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="reviewRatingStars" class="form-label d-block">Your Rating:</label>
+                <div id="reviewRatingStars" class="d-block d-md-flex justify-content-between align-items-center gap-3">
+                    <span id="ratingFeedback" class="p-0">Click stars to rate</span>
+                    <div class="star-rating-container fs-3 text-muted" data-current-rating="0">
+                        <i class="bi bi-star" data-rating="1" title="Poor"></i>
+                        <i class="bi bi-star" data-rating="2" title="Fair"></i>
+                        <i class="bi bi-star" data-rating="3" title="Good"></i>
+                        <i class="bi bi-star" data-rating="4" title="Great"></i>
+                        <i class="bi bi-star" data-rating="5" title="Excellent"></i>
+                    </div>
+                    <input type="hidden" name="rating" id="ratingInput" value="" required>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 mb-3">
+            <label for="reviewComment" class="form-label">Your Comment</label>
+            <textarea required name="comment" id="reviewComment" class="form-control" placeholder="Tell us about your experience..." rows="1"></textarea>
+        </div>
+        <div id="ratingError" class="alert alert-danger p-2 mb-3 d-none" role="alert">
+            Please select a star rating (1-5) before submitting.
+        </div>
+        <div class="d-grid">
+            <button type="submit" class="btn btn-primary btn-lg">Submit Review</button>
+        </div>
+    </form>
+</section>
+
+
+<section id="contact" class="my-4">
+	<div class="d-flex justify-content-between align-items-center pb-3 mb-4 border-bottom">
+      <h2 class="text-body fw-bold mb-0">Contact Us ☎️📨</h2>
+    </div>
+  <form method="post" action="{{ url_for('public.contact') }}">
+    <div class="row">
+      <div class="col-md-6 mb-2"><input required name="name" class="form-control" pattern="^[a-zA-Z\s]+$" title="Only letters (A-Z) and spaces are allowed." placeholder="Your name"></div>
+      <div class="col-md-6 mb-2"><input required name="email" class="form-control" placeholder="Your email"></div>
+      <div class="col-md-6 mb-2">
+        <select required name="sector" class="form-select">
+          <option value="">Select sector</option>
+          {% for s in sectors %}<option value="{{ s.id }}">{{ s.name }}</option>{% endfor %}
+        </select>
+      </div>
+      <div class="col-md-6 mb-2"><input name="phone" class="form-control" pattern="[0-9]{10}" placeholder="Your Phone" title="Only 10digit phone number are allowed." required></div>
+      <div class="col-md-8 mb-2"><input required name="subject" class="form-control" placeholder="Subject"></div>
+	  <div class="col-md-4 mb-2">
+			<div class="input-group">
+				<span class="input-group-text bg-warning fw-bold fs-5 text-black text-decoration-line-through" id="captcha-display">{{ captcha_text }}</span>
+				<button type="button" id="refresh-captcha-btn" class="px-2 fw-bold p-0 m-0" style="border:0; font-size:x-large;">⟳</button>
+				<input name="captcha" type="text" class="form-control" placeholder="Enter code above" required>
+			</div>
+	  </div>
+      <div class="col-md-12 mb-3"><textarea required name="message" class="form-control" placeholder="Your message" rows="2"></textarea></div>
+    </div>
+    <div class="d-grid"><button class="btn btn-primary btn-lg">Send Message</button></div>
+  </form>
+</section>
+
+<section class="mt-5 mb-md-5 text-body">
+	<div class="d-flex justify-content-between align-items-center pb-3 mb-4 border-bottom">
+      <h2 class="text-body fw-bold mb-0">Employee Verification ✅</h2>
+    </div>
+    <p class="my-3">Verify a JIGSY employee's status quickly and securely.</p>
+    <form method="post" action="{{ url_for('public.verify_employee') }}">
+        <div class="row my-2">
+            <div class="col-md-6 mb-2">
+                <label class="form-label">Your Email</label>
+                <input name="email" type="email" class="form-control" placeholder="email@domain.in" required>
+            </div>
+            <div class="col-md-6 mb-2">
+                <label class="form-label">Employee Unique ID</label>
+                <input name="employee_id" class="form-control" placeholder="EmployeeID" required>
+            </div>
+        </div>
+		<div class="row my-2">
+		<div class="col-md-6 mb-3">
+			<div class="input-group">
+				<span class="input-group-text bg-warning fw-bold fs-5 text-black text-decoration-line-through" id="captcha-display2">{{ captcha_text }}</span>
+				<button type="button" id="refresh-captcha-btn2" class="px-2 fw-bold p-0 m-0" style="border:0; font-size:x-large;">⟳</button>
+				<input name="captcha" type="text" class="form-control" placeholder="Enter code above" required>
+			</div>
+ 	    </div>
+		
+		<div class="col-md-6 mb-3">
+        <button class="btn btn-primary w-100" >Request Verification OTP</button>
+		</div>
+		</div>
+    </form>
+</section>
+
+	<script src="{{ url_for('static', filename='js/home.js') }}"></script>	
+
+<script>
+// I. ANNOUNCEMENT RIBBON TEXT CYCLING
+// ---------------------------------------------------------------------------
+(function() {
+    const texts = [
+        "Happy Birthday, Sars!",
+        " ॐ ",
+        "✨ Celebrating Our Launch! | We are excited to announce that <br> ** We're Live Now! **✨" // This is the longest text
+    ];
+    let i = 0;
+
+    function cycleText() {
+        // Use innerHTML to render HTML like <br> and bold tags (**)
+        const container = document.getElementById("animated-text-annimate");
+        if (container) {
+            container.innerHTML = texts[i];
+            i = (i + 1) % texts.length;
+        }
+    }
+
+    cycleText();
+    // Cycle every 5 seconds (5000 milliseconds)
+    setInterval(cycleText, 5000); 
+})();
+
+
+// II. CAROUSEL VIDEO AND VOLUME CONTROL (Final Robust Fix)
+// ---------------------------------------------------------------------------
+(function() {
+    // --- VOLUME TOGGLE LOGIC ---
+    document.querySelectorAll('.volume-toggle').forEach(button => {
+        button.addEventListener('click', function(e) {
+            
+            // CRITICAL: Stop the event immediately and prevent default action
+            e.stopPropagation(); 
+            e.preventDefault(); 
+            
+            // Log for debugging: If you see this, the click listener is working.
+            console.log("Volume button click processed."); 
+
+            const carouselItem = this.closest('.carousel-item');
+            
+            if (!carouselItem) {
+                console.error("Volume toggle failed: Parent .carousel-item not found.");
+                return;
+            }
+            
+            const video = carouselItem.querySelector('.hero-video');
+            const icon = this.querySelector('i');
+
+            if (!video || !icon) {
+                console.error("Volume toggle failed: Video or icon not found.");
+                return;
+            }
+
+            // 3. Toggle the muted state and update icon
+            if (video.muted) {
+                // UNMUTE
+                video.muted = false;
+                icon.classList.remove('bi-volume-mute-fill');
+                icon.classList.add('bi-volume-up-fill');
+                icon.setAttribute('data-state', 'unmuted');
+            } else {
+                // MUTE
+                video.muted = true;
+                icon.classList.remove('bi-volume-up-fill');
+                icon.classList.add('bi-volume-mute-fill');
+                icon.setAttribute('data-state', 'muted');
+            }
+        });
+    });
+
+    // --- CAROUSEL SLIDE LOGIC (Video pause/play on slide change) ---
+    const carousel = document.getElementById('heroVideoCarousel');
+    
+    if (carousel) {
+        // Pause and Mute video on exit
+        carousel.addEventListener('slide.bs.carousel', function(event) {
+            if (event.from && event.from.nodeType === 1) { 
+                const exitingVideo = event.from.querySelector('.hero-video');
+                const exitingIcon = event.from.querySelector('.volume-toggle i');
+                
+                if (exitingVideo) {
+                    exitingVideo.pause();
+                    exitingVideo.muted = true;
+                    if (exitingIcon) {
+                        exitingIcon.classList.remove('bi-volume-up-fill');
+                        exitingIcon.classList.add('bi-volume-mute-fill');
+                        exitingIcon.setAttribute('data-state', 'muted');
+                    }
+                }
+            }
+        });
+
+        // Play video on entry
+        carousel.addEventListener('slid.bs.carousel', function(event) {
+            if (event.to && event.to.nodeType === 1) {
+                const enteringVideo = event.to.querySelector('.hero-video');
+                
+                if (enteringVideo) {
+                    enteringVideo.play();
+                }
+            }
+        });
+    }
+})();
+
+
+document.getElementById('refresh-captcha-btn2').addEventListener('click', function() {
+        // 1. Make an asynchronous request to the backend route
+        fetch('/refresh_captcha')
+            .then(response => {
+                // Check if the request was successful (status code 200-299)
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json(); // Parse the JSON body
+            })
+            .then(data => {
+                // 2. The backend returns the new CAPTCHA text
+                const newText = data.captcha_text;
+                
+                // 3. Update the text in the HTML display
+                const captchaDisplay = document.getElementById('captcha-display2');
+                
+                // OPTIONAL: Add a quick visual effect (e.g., flash)
+                captchaDisplay.style.opacity = '0.5';
+                
+                // Update the text
+                captchaDisplay.textContent = newText;
+                
+                // Restore the visual effect after a slight delay
+                setTimeout(() => {
+                    captchaDisplay.style.opacity = '1';
+                }, 100);
+            })
+            .catch(error => {
+                console.error('Error refreshing CAPTCHA:', error);
+                alert('Could not refresh CAPTCHA. Please try again.');
+            });
+    });
+
+
+
+</script>
+{% endblock %}
