@@ -304,7 +304,7 @@ export const Footer: React.FC<FooterProps> = ({
         </div>
 
         {/* Regulatory Band with Sanskrit Motto - Exact 3-column, 2-row layout from image_66f1e17d.png */}
-        <div className="border-t border-slate-800/80 pt-6 pb-6">
+        <div className="pb-5">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-y-3.5 gap-x-4 text-center text-xs text-slate-400">
             {/* Row 1 */}
             <div className="font-serif text-slate-300 font-medium tracking-wide">
