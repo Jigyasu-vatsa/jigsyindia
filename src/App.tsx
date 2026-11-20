@@ -23,7 +23,8 @@ import {
 import { Language } from './types';
 import { COMPANY_DETAILS, SECTORS, DIRECTORS, FOUNDER_PORTRAITS } from './data/companyData';
 import { resolveRouteFromLocation, getPathForView, getRepoBasePath } from './utils/portalHelpers';
-import { SECURITY_GATE_CONFIG, shouldShowSecurityGate } from './utils/securityGate';
+import { SECURITY_GATE_CONFIG, shouldShowSecurityGate, isSearchEngineCrawler } from './utils/securityGate';
+import { applySeoMetadataToDocument, getSeoMetadataForView } from './utils/seoManager';
 import { UI_COPY } from './utils/uiCopy';
 import { CrispImage } from './components/CrispImage';
 import { SecurityGate } from './components/SecurityGate';
@@ -194,11 +195,12 @@ export default function App() {
     }
   });
 
-  // First Visit Onboarding Modal State (skipped when Security Gate already offered Theme/Language)
+  // First Visit Onboarding Modal State (skipped for crawlers or when Security Gate already ran)
   const [isFirstVisitModalOpen, setIsFirstVisitModalOpen] = useState<boolean>(() => {
     try {
       const params = new URLSearchParams(window.location.search || '');
       if (params.get('autostart') === '1') return false;
+      if (typeof navigator !== 'undefined' && isSearchEngineCrawler(navigator.userAgent)) return false;
       const storedGate = sessionStorage.getItem(SECURITY_GATE_CONFIG.sessionStorageKey);
       if (shouldShowSecurityGate(window.location.search || '', storedGate)) return false;
       return !localStorage.getItem('jigsy_visited');
@@ -206,6 +208,13 @@ export default function App() {
       return false;
     }
   });
+
+  // Dynamic Per-Route SEO Title, Description, Canonical, Robots & BreadcrumbList JSON-LD
+  useEffect(() => {
+    const origin = typeof window !== 'undefined' ? window.location.origin : undefined;
+    const meta = getSeoMetadataForView(currentView, selectedSectorSlug, language, origin);
+    applySeoMetadataToDocument(meta);
+  }, [currentView, selectedSectorSlug, language]);
 
   const handleCloseFirstVisitModal = () => {
     setIsFirstVisitModalOpen(false);

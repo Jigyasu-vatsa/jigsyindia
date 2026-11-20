@@ -27,11 +27,13 @@ import { buildCrispImageSource, OPTIMIZED_IMAGE_REGISTRY } from './imageAssets';
 import {
   SECURITY_GATE_CONFIG,
   shouldShowSecurityGate,
+  isSearchEngineCrawler,
   computeStage2Progress,
   computeStage3Remaining,
   isManualBypassReady,
   isHoneypotTriggered,
 } from './securityGate';
+import { BRAND_KEYWORDS, getSeoMetadataForView } from './seoManager';
 
 test('captcha generator creates 5-character alphanumeric uppercase code', () => {
   const challenge = generateCaptcha();
@@ -534,4 +536,67 @@ test('Security Gate enforces exact 15s total staged timeline, session persistenc
   assert.equal(isHoneypotTriggered('   '), false);
   assert.equal(isHoneypotTriggered('http://spam-bot.example'), true);
 });
+
+test('Search engine and social crawlers bypass 15s Security Gate immediately for uninterrupted SEO indexing', () => {
+  const crawlers = [
+    'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)',
+    'Mozilla/5.0 (compatible; bingbot/2.0; +http://www.bing.com/bingbot.htm)',
+    'DuckDuckBot/1.0; (+http://duckduckgo.com/duckduckbot.html)',
+    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.1.1 Safari/605.1.15 (Applebot/0.1)',
+    'Mozilla/5.0 (compatible; YandexBot/3.0; +http://yandex.com/bots)',
+    'Mozilla/5.0 (compatible; Yahoo! Slurp; http://help.yahoo.com/help/us/ysearch/slurp)',
+    'Twitterbot/1.0',
+    'LinkedInBot/1.0',
+  ];
+  for (const ua of crawlers) {
+    assert.equal(isSearchEngineCrawler(ua), true, `Expected crawler detected: ${ua}`);
+    assert.equal(shouldShowSecurityGate('', null, Date.now(), SECURITY_GATE_CONFIG, ua), false);
+  }
+  const normalChrome = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/128.0.0.0 Safari/537.36';
+  assert.equal(isSearchEngineCrawler(normalChrome), false);
+  assert.equal(shouldShowSecurityGate('', null, Date.now(), SECURITY_GATE_CONFIG, normalChrome), true);
+  assert.equal(shouldShowSecurityGate('?security_gate=1', null, Date.now(), SECURITY_GATE_CONFIG, crawlers[0]), true);
+});
+
+test('SEO manager covers every JIGSY / JIGS / JIGYASU legal brand variant and generates per-route canonical & robots metadata', () => {
+  const requiredVariants = [
+    'JIGSY',
+    'JIGSY INDIA',
+    'JIGS',
+    'JIGYASU',
+    'JIGYASU INTEGRATED',
+    'JIGYASU INTEGRATED GLOBAL',
+    'JIGYASU INTEGRATED GLOBAL SERVICES',
+    'JIGYASU INTEGRATED GLOBAL SERVICES PRIVATE',
+    'JIGYASU INTEGRATED GLOBAL SERVICES PRIVATE LIMITED',
+    'JIGYASU INTEGRATED GLOBAL SERVICES PVT',
+    'JIGYASU INTEGRATED GLOBAL SERVICES PVT LTD',
+    'JIGYASU INTEGRATED GLOBAL SERVICES PVT LIMITED',
+    'JIGYASU INTEGRATED GLOBAL SERVICES PRIVATE LTD',
+  ];
+
+  for (const variant of requiredVariants) {
+    assert.ok(BRAND_KEYWORDS.includes(variant), `Missing required brand keyword: ${variant}`);
+  }
+
+  const homeMeta = getSeoMetadataForView('home', undefined, 'en', 'http://localhost:3000');
+  assert.equal(homeMeta.canonicalUrl, 'https://jigsy.in/');
+  assert.ok(homeMeta.robots.includes('index, follow'));
+  assert.ok(homeMeta.title.includes('JIGSY INDIA'));
+  assert.ok(homeMeta.title.includes('Jigyasu Integrated Global Services Private Limited'));
+
+  const founderMeta = getSeoMetadataForView('about-founder', undefined, 'hi', 'https://jigsy.in');
+  assert.equal(founderMeta.canonicalUrl, 'https://jigsy.in/about/founder');
+  assert.equal(founderMeta.htmlLang, 'hi-IN');
+  assert.ok(founderMeta.title.includes('Jigyasu Vatsa'));
+  assert.equal(founderMeta.breadcrumbs.length, 3);
+
+  const techMeta = getSeoMetadataForView('sector-detail', 'tech', 'en', 'https://jigsy.in');
+  assert.equal(techMeta.canonicalUrl, 'https://jigsy.in/sectors/tech');
+  assert.ok(techMeta.title.includes('JIGSY Tech'));
+
+  const notFoundMeta = getSeoMetadataForView('not-found', undefined, 'en', 'https://jigsy.in');
+  assert.equal(notFoundMeta.robots, 'noindex, follow');
+});
+
 

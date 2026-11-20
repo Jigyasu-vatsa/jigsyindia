@@ -1,0 +1,28 @@
+{
+  "name": "JIGSY INDIA — Jigyasu Integrated Global Services Private Limited",
+  "short_name": "JIGSY INDIA",
+  "description": "Official multi-sector corporate portal of Jigyasu Integrated Global Services Private Limited (JIGSY / JIGS / JIGYASU Pvt Ltd, CIN: U62099BR2025PTC078592).",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#1e3a8a",
+  "lang": "en-IN",
+  "icons": [
+    {
+      "src": "/assets/aistudio/opt/company_logo-96.png",
+      "sizes": "96x96",
+      "type": "image/png"
+    },
+    {
+      "src": "/assets/aistudio/opt/company_logo-144.png",
+      "sizes": "144x144",
+      "type": "image/png"
+    },
+    {
+      "src": "/assets/aistudio/company_logo_9f4f4bb5.png",
+      "sizes": "200x200",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}

@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset
+  xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml"
+>
+  <!-- Home: JIGSY INDIA — Jigyasu Integrated Global Services Private Limited -->
+  <url>
+    <loc>https://jigsy.in/</loc>
+    <lastmod>2026-11-20</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="en-IN" href="https://jigsy.in/" />
+    <xhtml:link rel="alternate" hreflang="hi-IN" href="https://jigsy.in/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://jigsy.in/" />
+    <image:image>
+      <image:loc>https://jigsy.in/assets/aistudio/company_logo_9f4f4bb5.png</image:loc>
+      <image:title>JIGSY INDIA Official Seal — Jigyasu Integrated Global Services Private Limited</image:title>
+      <image:caption>Official emblem of JIGSY INDIA (Jigyasu Integrated Global Services Pvt Ltd, CIN U62099BR2025PTC078592)</image:caption>
+    </image:image>
+  </url>
+
+  <!-- About Company -->
+  <url>
+    <loc>https://jigsy.in/about/company</loc>
+    <lastmod>2026-11-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.95</priority>
+    <image:image>
+      <image:loc>https://jigsy.in/assets/aistudio/company_logo_9f4f4bb5.png</image:loc>
+      <image:title>About Jigyasu Integrated Global Services Private Limited (JIGSY INDIA)</image:title>
+    </image:image>
+  </url>
+
+  <!-- Founder — Mr. Jigyasu Vatsa -->
+  <url>
+    <loc>https://jigsy.in/about/founder</loc>
+    <lastmod>2026-11-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.95</priority>
+    <image:image>
+      <image:loc>https://jigsy.in/assets/aistudio/JIGSY_Chairperson_Corporate_Portrait_0c353573.png</image:loc>
+      <image:title>Mr. Jigyasu Vatsa — Founder &amp; Chairperson of JIGSY INDIA</image:title>
+      <image:caption>Mr. Jigyasu Vatsa, M.Tech (CSE), MBA, Researcher — Founder of Jigyasu Integrated Global Services Private Limited</image:caption>
+    </image:image>
+  </url>
+
+  <!-- Board of Directors -->
+  <url>
+    <loc>https://jigsy.in/about/directors</loc>
+    <lastmod>2026-11-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.90</priority>
+    <image:image>
+      <image:loc>https://jigsy.in/assets/aistudio/Confident_Corporate_Portrait_at_JIGYASU__1__16c127e6.png</image:loc>
+      <image:title>JIGSY INDIA Board of Directors — Mr. Jigyasu Vatsa &amp; Mr. Subhash Chandra Jha</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://jigsy.in/assets/aistudio/director1_46675417.jpg</image:loc>
+      <image:title>Mr. Subhash Chandra Jha — Director, Jigyasu Integrated Global Services Private Limited</image:title>
+    </image:image>
+  </url>
+
+  <!-- All 6 Corporate Sectors & Services Overview -->
+  <url>
+    <loc>https://jigsy.in/sectors</loc>
+    <lastmod>2026-11-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.95</priority>
+  </url>
+
+  <!-- Sector 1: JIGSY Tech -->
+  <url>
+    <loc>https://jigsy.in/sectors/tech</loc>
+    <lastmod>2026-11-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.90</priority>
+  </url>
+
+  <!-- Sector 2: JIGSY Consult -->
+  <url>
+    <loc>https://jigsy.in/sectors/consult</loc>
+    <lastmod>2026-11-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.90</priority>
+  </url>
+
+  <!-- Sector 3: JIGSY R&D -->
+  <url>
+    <loc>https://jigsy.in/sectors/rd</loc>
+    <lastmod>2026-11-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.90</priority>
+  </url>
+
+  <!-- Sector 4: JIGSY DigiTech -->
+  <url>
+    <loc>https://jigsy.in/sectors/digitech</loc>
+    <lastmod>2026-11-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.90</priority>
+  </url>
+
+  <!-- Sector 5: JIGSY EduTech -->
+  <url>
+    <loc>https://jigsy.in/sectors/edutech</loc>
+    <lastmod>2026-11-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.90</priority>
+  </url>
+
+  <!-- Sector 6: JIGSY Youth -->
+  <url>
+    <loc>https://jigsy.in/sectors/youth</loc>
+    <lastmod>2026-11-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+  <!-- How to Engage & Collaborate -->
+  <url>
+    <loc>https://jigsy.in/engage</loc>
+    <lastmod>2026-11-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+  <!-- Careers & Talent Pool -->
+  <url>
+    <loc>https://jigsy.in/careers</loc>
+    <lastmod>2026-11-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+  <!-- Official Contact & Service Request Desk -->
+  <url>
+    <loc>https://jigsy.in/contact</loc>
+    <lastmod>2026-11-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.90</priority>
+  </url>
+</urlset>

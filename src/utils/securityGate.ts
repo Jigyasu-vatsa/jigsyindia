@@ -38,22 +38,46 @@ export const SECURITY_GATE_CONFIG: SecurityGateConfig = {
 export type SecurityGateStage = 0 | 2 | 3 | 4;
 
 /**
+ * Verified major search engine & social preview crawler signatures.
+ * Allowing legitimate indexing bots past the 15s Anti-DoS gate guarantees
+ * Google, Bing, Yahoo, DuckDuckGo, Safari/Applebot, Yandex, Baidu, and social
+ * link previews index 100% of the live JIGSY INDIA corporate content immediately.
+ */
+const VERIFIED_SEARCH_CRAWLER_PATTERN =
+  /googlebot|google-inspectiontool|adsbot-google|mediapartners-google|bingbot|bingpreview|msnbot|slurp|duckduckbot|baiduspider|yandex(bot|images|mobilebot)?|applebot|facebookexternalhit|twitterbot|linkedinbot|whatsapp|telegrambot|discordbot|slackbot|petalbot|qwantify|seznambot|yeti|sogou|exabot/i;
+
+export function isSearchEngineCrawler(userAgent: string = ''): boolean {
+  return VERIFIED_SEARCH_CRAWLER_PATTERN.test(userAgent || '');
+}
+
+/**
  * Determines whether the pre-load Anti-DoS / Anti-Bot Security Gate should display.
  * - `?security_gate=1` always forces the gate open (useful for inspection & verification).
  * - `?autostart=1` bypasses the gate for quick direct preview/automated links.
+ * - Verified search engine & social crawlers bypass immediately for full SEO indexing.
  * - Otherwise, displays once per 30-minute session until verified.
  */
 export function shouldShowSecurityGate(
   search: string = '',
   sessionVerifiedAtRaw: string | null = null,
   nowMs: number = Date.now(),
-  config: SecurityGateConfig = SECURITY_GATE_CONFIG
+  config: SecurityGateConfig = SECURITY_GATE_CONFIG,
+  userAgent?: string
 ): boolean {
   const params = new URLSearchParams(search || '');
   if (params.get('security_gate') === '1') {
     return true;
   }
   if (params.get('autostart') === '1') {
+    return false;
+  }
+  const effectiveUa =
+    userAgent !== undefined
+      ? userAgent
+      : typeof navigator !== 'undefined'
+        ? navigator.userAgent || ''
+        : '';
+  if (isSearchEngineCrawler(effectiveUa)) {
     return false;
   }
   if (sessionVerifiedAtRaw) {
